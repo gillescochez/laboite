@@ -1,7 +1,13 @@
 /*
+ *  La Boite v.2.0
+ *  Copyright 2011, Gilles Cochez
+ *  Released under the MIT, BSD, and GPL Licenses.
+ */
+/*
 	TODO
-	
-		- FX support (nearly there ~ need to handle initial state and full on plugin somehow
+		- Split into multiple files
+		- Add build system
+		- Change folder structure
 		- Change intl handling (simplified object)
 
 */
@@ -10,12 +16,12 @@
 (function($) {
 
 	// caching few global elements
-	var $win = $(window);
-	var $doc = $(document);
+	var $win = $(window).
+		$doc = $(document),
 
 	// some string as variables for compression
-	var notfound = 'not found';
-	var bodySel = 'body:eq(0)';
+		notfound = 'not found';
+		bodySel = 'body:eq(0)';
 	
 	// plugin declaration
 	$.laboite = function(root) {
