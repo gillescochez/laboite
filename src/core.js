@@ -1,3 +1,11 @@
+// caching few global elements
+var $win = $(window),
+	$doc = $(document),
+
+// some string as variables for compression
+	notfound = 'not found',
+	bodySel = 'body:eq(0)';
+
 // plugin declaration
 $.laboite = function(root) {
 	
@@ -61,7 +69,7 @@ $.laboite = function(root) {
 				pg.call('buildUI');
 				
 				if (pg.inject && pg.injectType == 'replace') {
-					pg.call('goto', pg.currentIndex);					
+					pg.call('goToId', pg.currentIndex);					
 				} else {
 				
 					// bind our element
@@ -71,7 +79,7 @@ $.laboite = function(root) {
 						ev.preventDefault();
 						
 						// trigger opening (or showing if we inject the UI into the page itself)
-						if (pg.options.inject) pg.call('goto', $(this).index());
+						if (pg.options.inject) pg.call('goToId', $(this).index());
 						else pg.call('open', this);
 					});
 				};
@@ -156,7 +164,7 @@ $.laboite = function(root) {
 				pg.indom = true;
 				
 				// load default index image
-				pg.call('goto', pg.options.defaultIndex);
+				pg.call('goToId', pg.options.defaultIndex);
 			
 			} else {
 				
@@ -176,7 +184,7 @@ $.laboite = function(root) {
 		},
 		
 		// go to the element of the given index
-		goto: function(index) {
+		goToId: function(index) {
 
 			// make sure out index is within our data set 
 			if (index >= 0 && index <= pg.options.__count-1) pg.call('load', index);
@@ -221,7 +229,7 @@ $.laboite = function(root) {
 			pg.call('modalBind');
 			
 			// go to the requested item
-			pg.call('goto', $(trigger).index());
+			pg.call('goToId', $(trigger).index());
 		},
 		
 		
@@ -257,17 +265,17 @@ $.laboite = function(root) {
 		// stop the slideshow process
 		stop: function() {
 			pg.call('pause');
-			pg.call('goto', 0);
+			pg.call('goToId', 0);
 		},
 		
 		// go to the next item 
 		next: function() {
-			pg.call('goto', pg.currentIndex + 1);
+			pg.call('goToId', pg.currentIndex + 1);
 		},
 		
 		// go to the previous item
 		previous: function() {
-			pg.call('goto', pg.currentIndex - 1);
+			pg.call('goToId', pg.currentIndex - 1);
 		},
 		
 		// switch the view of an item (does hideItem and showItem basically)

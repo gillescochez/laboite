@@ -21,7 +21,7 @@ body {
 	.laboite-content {}
 	
 		/* 
-			BOF TEMPORARY IMAGE WIDTH LIMITTER (can't be arsed resizing images yet!)
+			BOF TEMPORARY IMAGE WIDTH LIMITTER
 		*/
 		.laboite-content img {
 			width:400px;
