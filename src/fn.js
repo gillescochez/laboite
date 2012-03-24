@@ -17,10 +17,10 @@ $.fn.laboite = function() {
 		if (arguments.length) {
 		
 			// make sure our first argument is a string
-			if (typeof arguments[0] == 'string') {
+			if (arguments[0].constructor == String) {
 				
 				// make sure it is a valid method (the user might not be using call which would check for that)
-				if ($(this).data('laboite')[arguments[0]]) {
+				if ($.isFunction($(this).data('laboite')[arguments[0]])) {
 				
 					// handle methods direct method calls as well as via cal method (that line handle both cases)
 					var res = $(this).data('laboite')[arguments[0]].apply(null, Array.prototype.slice.call(arguments, 1));

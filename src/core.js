@@ -139,7 +139,7 @@ $.laboite = function(root) {
 			
 				// loop through slideshow only action and hide them away
 				$.each(['play','pause','stop'], function(k, v) {
-					pg.uicache[v].hide();
+					pg.uicache[v] && pg.uicache[v].hide();
 				});
 				
 				// we add a class for the disabled state for more styling flexibility
@@ -283,9 +283,10 @@ $.laboite = function(root) {
 				
 			// call the hide item method
 			pg.call('hideItem', function() {
-			
+
 				// when animation is completed we switch content
-				pg.uicache['content'].html(pg.loaded[pg.currentIndex]);
+				pg.uicache['content'].children().hide();
+				$(pg.loaded[pg.currentIndex]).show();
 				
 				// and show the item
 				pg.call('showItem');
@@ -294,46 +295,40 @@ $.laboite = function(root) {
 		
 		// handle the transition out of an item
 		hideItem: function(fn) {
-			
+
 			// grab effect configuration object
-			var fx = $.laboite.fx[pg.options.effect].hide;
-			
-			// sort out CSS changes
-			var css = fx.css;
+			var fx = $.laboite.fx[pg.options.effect || 'none'].hide,
 			
 			// sort out our config element
-			var config = {};
+			config = {};
 			
 			// callback to handle?
-			if (fn) config.complete = function() { fn(); };
+			if (fn) config.complete = fn;
 			
 			// extend our config element with the effect config settings
-			$.extend({}, fx.config, config);
+			$.extend(config, fx.config);
 			
 			// hide the current item and do the callback on complete if any set
-			pg.uicache['content'].animate(css, config);
+			pg.uicache['content'].animate(fx.css, config);
 		},
 		
 		// handle the tranbsition in of an item
 		showItem: function(fn) {
 			
 			// grab effect configuration object
-			var fx = $.laboite.fx[pg.options.effect].show;
-			
-			// sort out CSS changes
-			var css = fx.css;
+			var fx = $.laboite.fx[pg.options.effect || 'none'].show,
 			
 			// sort out our config element
-			var config = {};
+			config = {};
 			
 			// callback to handle?
-			if (fn) config.complete = function() { fn(); };
+			if (fn) config.complete = fn;
 			
 			// extend our config element with the effect config settings
-			$.extend({}, fx.config, config);
+			$.extend(config, fx.config);
 			
 			// hide the current item and do the callback on complete if any set
-			pg.uicache['content'].animate(css, config);
+			pg.uicache['content'].animate(fx.css, config);
 		},
 		
 		// hide the loader element
@@ -392,9 +387,9 @@ $.laboite = function(root) {
 					/*
 						TO DO - DETECT REQUESTS TYPE				
 					*/
-					var source = pg.options.data.items[index].source;
-					var bits = source.split('.');
-					var extension = bits[bits.length-1];
+					var source = pg.options.data.items[index].source,
+					bits = source.split('.'),
+					extension = bits[bits.length-1];
 					
 				};
 			};
@@ -417,30 +412,27 @@ $.laboite = function(root) {
 				return false;
 			};
 			
-			// image load event listener
-			$(img).bind('load', function() {
-
-				// remove the temporary image object
-				$(this).remove();
-				
-				// build an image element to insert into the content element
-				var $img = $('<img src="'+src+'" alt="'+title+'" />');
+			img.onload = function() {
 				
 				// cache the image element
-				pg.loaded[index] = $img;
+				pg.loaded[index] = img;
 				
 				// update the content element
-				pg.uicache['content'].empty().append(pg.loaded[index]);
-				
-				// show the item
-				pg.call('showItem');
+				pg.uicache['content'].children().hide().end().append(pg.loaded[index]);
+				pg.uicache['container'].css({
+					height: $(pg.loaded[index]).height(),
+					width: $(pg.loaded[index]).width()
+				});
 				
 				// if not injected we make sure to position the interface again once the content 
 				// has been loaded into the container
 				if (!pg.options.inject) pg.call('positionUI');
-			
-			// we add the src attribute to start the loading process
-			}).attr('src', src);
+				
+				// show the item
+				pg.call('showItem');
+			};
+			img.src = src;
+			img.title = title;
 		},
 		
 		// handle flash requests
@@ -482,17 +474,17 @@ $.laboite = function(root) {
 			var box = {
 				w: pg.layout.width(),
 				h: pg.layout.height()
-			};
+			},
 			
 			// window dimension
-			var win = {
+			win = {
 				w:$win.width(),
 				h:$win.height()
-			};
+			},
 			
 			// caculate new top and left values
-			var newTop = parseInt((win.h-box.h)/2);
-			var newLeft = parseInt((win.w-box.w)/2);
+			newTop = parseInt((win.h-box.h)/2),
+			newLeft = parseInt((win.w-box.w)/2);
 			
 			// make sure the values are within the viewable area
 			if (newTop < 0) newTop = 0;
@@ -538,20 +530,22 @@ $.laboite = function(root) {
 			// is it needed?
 			if (pg.options.dimmer && pg.uicache['dimmer']) {
 			
-				// do we need to style it? We do it on every call so it allows for dynamic background
+				// do we need to style it? We do it on every call so it allows for dynamic background 
+				// (performance? optional? watch properties?)
 				if (pg.options.dimmerMatchBackground) {
 					
 					// variables
 					var 
 						// grab the body element
 						body = $(bodySel),
+						bg = 'background-',
 						
 						// CSS properties to copy over
 						css = [
-							'background-color',
-							'background-image',
-							'background-repeat',
-							'background-position'
+							bg + 'color',
+							bg + 'image',
+							bg + 'repeat',
+							bg + 'position'
 						];
 					
 					// loop through css properties and copy if present
@@ -764,11 +758,6 @@ $.laboite = function(root) {
 				msg = pg.name+': '+msg;
 				console.log(msg);
 			};
-		},
-		
-		// used for testing, to be deleted later on
-		test: function(option) {
-			return pg.options[option];
 		}
 	});
 };
