@@ -20,15 +20,13 @@ and languages which can be extended very easily.
 
 $(function() {
 
-	// Example binging some elements
+	// modal example with continuous slideshow
 	$('#items a.item').laboite({
 		continuous: true,
 		slideshow:true
-	}).css({
-		fontWeight:'bold'
 	});
 
-	// Example binging some elements
+	// Injected example using the drop effect and the inline layout
 	$('#items2 a.item').laboite({
 		inject: true,
 		injectTarget: '#canvas',
@@ -41,6 +39,7 @@ $(function() {
 
 ```html
 <div id="items">
+	<!-- first item is a flash movie -->
 	<a class="item" href="fireworks.swf" title="Image 1" data-laboite-maxWidth="640" data-laboite-maxHeight="480" data-laboite-description="This is the description">Fireworks</a>
 	<a class="item" href="images/image2.jpg" title="Image 2" data-laboite-maxWidth="640" data-laboite-maxHeight="480" data-laboite-description="This is the description">Image 2</a>
 	<a class="item" href="images/image3.jpg" title="Image 3" data-laboite-maxWidth="640" data-laboite-maxHeight="480" data-laboite-description="This is the description">Image 3</a>
@@ -57,12 +56,17 @@ $(function() {
 	<a class="item" href="images/image5.jpg" title="Image 5" data-laboite-maxWidth="640" data-laboite-maxHeight="480" data-laboite-description="This is the description">Image 5</a>
 	<a class="item" href="images/image6.jpg" title="Image 6" data-laboite-maxWidth="640" data-laboite-maxHeight="480" data-laboite-description="This is the description">Image 6</a>
 </div>
-<!-- the second gallery will be displayed in this elements - the hyperlinks can still be used to navigate the gallery -->
+
+<!-- the second gallery will be displayed in this elements -->
+<!-- the hyperlinks can still be used to navigate the gallery -->
 <div id="canvas"></div>
 ```
 
 ### As a jQuery "class"
 
 ## API
+
+## La Boite version 1
+http://laboite.codeserenity.com
 
 
