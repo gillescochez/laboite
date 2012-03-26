@@ -12,11 +12,11 @@ and languages which can be extended very easily.
 
 ## Usage
 
-```javascript
-
 ### As a jQuery plugin
 
 #### Using the markup to get the data
+
+```javascript
 
 $(function() {
 
