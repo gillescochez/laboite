@@ -14,6 +14,10 @@ and languages which can be extended very easily.
 
 ```javascript
 
+### As a jQuery plugin
+
+#### Using the markup to get the data
+
 $(function() {
 
 	// Example binging some elements
@@ -56,8 +60,6 @@ $(function() {
 <!-- the second gallery will be displayed in this elements - the hyperlinks can still be used to navigate the gallery -->
 <div id="canvas"></div>
 ```
-
-### As a jQuery plugin
 
 ### As a jQuery "class"
 
