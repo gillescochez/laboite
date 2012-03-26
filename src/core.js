@@ -1,19 +1,22 @@
 // caching few global elements
 var $win = $(window),
-	$doc = $(document),
-
-// some string as variables for compression
-	notfound = 'not found',
-	bodySel = 'body:eq(0)';
+	$doc = $(document);
 
 // plugin declaration
 $.laboite = function(root) {
 	
-	// cache our object (shorter and avoid clash with other "this" references)
-	var pg = this;
+	// instance self reference and variables
+	var laboite = this,
+		options, layouts, effects, languages, 
+		cache = [], 
+		loaded = [], 
+		indom = false, 
+		layout = null, 
+		animate = false,
+		currentIndex, data;
 	
 	// extend
-	$.extend(pg, {
+	$.extend(laboite, {
 
 		// plugin name
 		name: 'laboite',
@@ -22,65 +25,52 @@ $.laboite = function(root) {
 		version: '2.0',
 		
 		// initialize functions
-		init: function(options, layouts, languages) {
+		init: function(customOptions, customLayouts, customEffects, customLanguages) {
 		
 			// sort instance options
-			pg.options = $.extend({}, $.laboite.defaults, options);
+			options = $.extend({}, $.laboite.defaults, customOptions);
 			
 			// sort instance layouts
-			pg.layouts = $.extend({}, $.laboite.layouts, layouts);
+			layouts = $.extend({}, $.laboite.layouts, customLayouts);
 			
 			// sort instance languages
-			pg.languages = $.extend({}, $.laboite.languages, languages);
+			effects = $.extend({}, $.laboite.effects, customEffects);
 			
-			// used internally to cache UI elements
-			pg.uicache = [];
-			
-			// used internally to cache content already loaded (and preloaded content)
-			pg.loaded = [];
-			
-			// track wether the UI is in the dom or not (modal get injected only when requested the first time)
-			pg.indom = false;
-			
-			// used to store the layout (uicache is probably better)
-			pg.layout = null;
-			
-			// track the state of animation
-			pg.animate = false;
+			// sort instance languages
+			languages = $.extend({}, $.laboite.languages, customLanguages);
 			
 			// keep track of the index for the current displayed element
-			pg.currentIndex = pg.options.defaultIndex;
+			currentIndex = options.defaultIndex;
 			
 			// first before anything we need to get some data
-			if (!pg.options.data) pg.call('getData');
-			else pg.call('run');
+			if (!options.data) laboite.call('getData');
+			else laboite.call('run');
 		},
 		
 		// run!
 		run: function() {
 
 			// run only if we have data of course
-			if (pg.options.data) {
+			if (options.data) {
 			
 				// reset the items count
-				pg.call('resetCount');
+				laboite.call('resetCount');
 				
 				// build the UI
-				pg.call('buildUI');
+				laboite.call('buildUI');
 				
-				if (pg.inject && pg.injectType == 'replace') {
-					pg.call('goToId', pg.currentIndex);					
-				} else {
+				if (laboite.inject && laboite.injectType == 'replace') laboite.call('goToId', animate);					
+				else {
 				
 					// bind our element
-					root.live(pg.options.onEvent, function(ev) {
+					root.live(options.onEvent, function(ev) {
 					
 						// prevent default behaviour
 						ev.preventDefault();
 						
 						// trigger opening (or showing if we inject the UI into the page itself)
-						if (pg.options.inject) pg.call('goToId', $(this).index());
-						else pg.call('open', this);
+						if (options.inject) laboite.call('goToId', $(this).index());
+						else laboite.call('open', this);
 					});
 				};
 			};
@@ -90,15 +80,15 @@ $.laboite = function(root) {
 		buildUI: function() {
 		
 			// grab the layout template
-			pg.layout = pg.call('getLayout', pg.options.layout);
+			layout = laboite.call('getLayout', options.layout);
 			
 			//extract plugin specific element and cache them (easier to access later and we are already in the layout context)
-			$('[class^="'+pg.options.css.prefix+'"]', pg.layout).each(function(k) {
+			$('[class^="' + options.css.prefix + '"]', layout).each(function(k) {
 				
 				// grab all the classes, split them and store the count
 				var classes = this.className,
 					bits = classes.split(' '),
-					nb = classes.length-1;
+					nb = classes.length - 1;
 				
 				// make sure we at least have one class before we continue
 				if (nb) {
@@ -107,26 +97,26 @@ $.laboite = function(root) {
 					for (var i = 0; i < nb; i++) {
 					
 						// make sure it is a aboite sepecific classes 
-						if (bits[i] && bits[i].indexOf(pg.options.css.prefix) !== -1) {
+						if (bits[i] && bits[i].indexOf(options.css.prefix) !== -1) {
 							
 							// we build an internal identifier for our element by removing the prefix part (faster access and few lines down it would be clearer why)
-							var id = bits[i].replace(pg.options.css.prefix,'');
+							var id = bits[i].replace(options.css.prefix, '');
 							
 							// cache our element (we strip out the prefix for easier access
-							pg.uicache[id] = $(this);
+							cache[id] = $(this);
 
 							// now let's see if there is a function that can be bind to that element
 							// the plugin is build so that the defaults CSS name matches (tiny footprint)
-							if ($.isFunction(pg[id])) {
+							if ($.isFunction(laboite[id])) {
 							
 								// bind the element
-								pg.uicache[id].click(function(ev) {
+								cache[id].click(function(ev) {
 								
 									// prevent default behaviour
 									ev.preventDefault();
 									
 									// do the method call
-									pg.call(id);
+									laboite.call(id);
 								});
 							};
 						};
@@ -135,50 +125,50 @@ $.laboite = function(root) {
 			});
 			
 			// if the slideshow is off we hide useless button
-			if (!pg.options.slideshow) {
+			if (!options.slideshow) {
 			
 				// loop through slideshow only action and hide them away
-				$.each(['play','pause','stop'], function(k, v) {
-					pg.uicache[v] && pg.uicache[v].hide();
+				$.each(['play', 'pause', 'stop'], function(k, v) {
+					cache[v] && cache[v].hide();
 				});
 				
 				// we add a class for the disabled state for more styling flexibility
-				pg.layout.addClass(pg.options.css.prefix+pg.options.css.slideshowDisabled);
+				layout.addClass(options.css.prefix+options.css.slideshowDisabled);
 			};
 			
 			// do we need to inject then UI into the page?
-			if (pg.options.inject) {
+			if (options.inject) {
 			
 				// grab the target to be injected
-				var $target = $(pg.options.injectTarget);
+				var $target = $(options.injectTarget);
 				
 				// inject the UI based on the configuration settings
-				if ('append' == pg.options.injectType || 'prepend' == pg.options.injectType) $target[pg.options.injectType](pg.layout);
-				else if ('replace' == pg.options.injectType) $target.html(pg.layout);
+				if ('append' == options.injectType || 'prepend' == options.injectType) $target[options.injectType](layout);
+				else if ('replace' == options.injectType) $target.html(layout);
 				else {
-					pg.error('invalid injectType');
+					laboite.error('invalid injectType');
 					return false;
 				};
 				
 				// mark as in
-				pg.indom = true;
+				indom = true;
 				
 				// load default index image
-				pg.call('goToId', pg.options.defaultIndex);
+				laboite.call('goToId', options.defaultIndex);
 			
 			} else {
 				
 				// set the opacity of the layout to 0
-				pg.layout.css('opacity', 0);
+				layout.css('opacity', 0);
 				
 				// sort out the dimmer element if needed
-				if (pg.options.dimmer) {
+				if (options.dimmer) {
 				
 					// we cache it, apply some styling and bind it here too
-					pg.uicache['dimmer'] = $('<div class="'+pg.options.css.prefix+pg.options.css.dimmer+'" />')
+					cache['dimmer'] = $('<div class="' + options.css.prefix + options.css.dimmer + '" />')
 					.hide().bind('click', function() {
-						pg.call('close');
-					}).appendTo(bodySel);
+						laboite.call('close');
+					}).appendTo('body:eq(0)');
 				};
 			};
 		},
@@ -187,18 +177,18 @@ $.laboite = function(root) {
 		goToId: function(index) {
 
 			// make sure out index is within our data set 
-			if (index >= 0 && index <= pg.options.__count-1) pg.call('load', index);
+			if (index >= 0 && index <= options.__count - 1) laboite.call('load', index);
 			else {
 			
 				// if continuous browsing is enabled we fix the new index
-				if (pg.options.continuous) {
+				if (options.continuous) {
 				
 					// if inferior to 0 we moved to the end of the set, if not at the beginning
-					if (index < 0) var newIndex = pg.options.__count-1;
+					if (index < 0) var newIndex = options.__count - 1;
 					else var newIndex = 0;
 
 					// load the new index
-					pg.call('load', newIndex);
+					laboite.call('load', newIndex);
 				};
 			};
 		},
@@ -207,29 +197,29 @@ $.laboite = function(root) {
 		open: function(trigger) {
 			
 			// sort dimmer element
-			pg.call('openDimmer');
+			laboite.call('openDimmer');
 			
 			// if the UI is not in the dom yet, not injected, we need to put the markup into the page first
-			if (!pg.indom) {
+			if (!indom) {
 				
 				// add in the dom and fade it in
-				pg.layout.appendTo(bodySel).fadeTo(pg.options.dimmerFadeDuration, 1);
+				layout.appendTo('body:eq(0)').fadeTo(options.dimmerFadeDuration, 1);
 				
 				// center the UI
-				pg.call('positionUI');
+				laboite.call('positionUI');
 				
 				// mark the UI as in the dom now
-				pg.indom = true;
+				indom = true;
 			}
 			
 			// if it's already in the dom we just fade it in
-			else pg.layout.fadeTo(pg.options.dimmerFadeDuration, 1);
+			else layout.fadeTo(options.dimmerFadeDuration, 1);
 								
 			// bind the window on resize
-			pg.call('modalBind');
+			laboite.call('modalBind');
 			
 			// go to the requested item
-			pg.call('goToId', $(trigger).index());
+			laboite.call('goToId', $(trigger).index());
 		},
 		
 		
@@ -237,59 +227,59 @@ $.laboite = function(root) {
 		close: function() {
 			
 			// request dimmer to be close
-			pg.call('closeDimmer');
+			laboite.call('closeDimmer');
 			
 			// fade out the UI
-			pg.layout.fadeTo(pg.options.dimmerFadeDuration, 0, function() {
+			layout.fadeTo(options.dimmerFadeDuration, 0, function() {
 			
 				// display:none on the UI
-				pg.layout.hide();
+				layout.hide();
 			});
 			
 			// bind the window on resize
-			pg.call('modalUnbind');
+			laboite.call('modalUnbind');
 		},
 		
 		// start the slideshow process
 		play: function() {
-			pg.t = setInterval(function() {
-				pg.call('next');
-			}, pg.options.slideshowDelay);
+			laboite.t = setInterval(function() {
+				laboite.call('next');
+			}, options.slideshowDelay);
 		},
 		
 		// pause the slideshow process
 		pause: function() {
-			clearInterval(pg.t);
+			clearInterval(laboite.t);
 		},
 		
 		// stop the slideshow process
 		stop: function() {
-			pg.call('pause');
-			pg.call('goToId', 0);
+			laboite.call('pause');
+			laboite.call('goToId', 0);
 		},
 		
 		// go to the next item 
 		next: function() {
-			pg.call('goToId', pg.currentIndex + 1);
+			laboite.call('goToId', animate + 1);
 		},
 		
 		// go to the previous item
 		previous: function() {
-			pg.call('goToId', pg.currentIndex - 1);
+			laboite.call('goToId', animate - 1);
 		},
 		
 		// switch the view of an item (does hideItem and showItem basically)
 		switchItem: function(index) {
 				
 			// call the hide item method
-			pg.call('hideItem', function() {
+			laboite.call('hideItem', function() {
 
 				// when animation is completed we switch content
-				pg.uicache['content'].children().hide();
-				$(pg.loaded[pg.currentIndex]).show();
+				cache['content'].children().hide();
+				$(loaded[animate]).show();
 				
 				// and show the item
-				pg.call('showItem');
+				laboite.call('showItem');
 			});
 		},
 		
@@ -297,7 +287,7 @@ $.laboite = function(root) {
 		hideItem: function(fn) {
 
 			// grab effect configuration object
-			var fx = $.laboite.fx[pg.options.effect || 'none'].hide,
+			var fx = effects[options.effect || 'none'].hide,
 			
 			// sort out our config element
 			config = {};
@@ -309,14 +299,14 @@ $.laboite = function(root) {
 			$.extend(config, fx.config);
 			
 			// hide the current item and do the callback on complete if any set
-			pg.uicache['content'].animate(fx.css, config);
+			cache['content'].css(fx.init || {}).animate(fx.css, config);
 		},
 		
 		// handle the tranbsition in of an item
 		showItem: function(fn) {
 			
 			// grab effect configuration object
-			var fx = $.laboite.fx[pg.options.effect || 'none'].show,
+			var fx = effects[options.effect || 'none'].show,
 			
 			// sort out our config element
 			config = {};
@@ -328,45 +318,45 @@ $.laboite = function(root) {
 			$.extend(config, fx.config);
 			
 			// hide the current item and do the callback on complete if any set
-			pg.uicache['content'].animate(fx.css, config);
+			cache['content'].css(fx.init || {}).animate(fx.css, config);
 		},
 		
 		// hide the loader element
 		hideLoader: function() {
-		
+			if (cache.loader) cache.loader.hide();
 		},
 		
 		// show the loader element
 		showLoader: function() {
-		
+			if (cache.loader) cache.loader.show();
 		},
 		
 		// load a requested content
 		load: function(index) {
 			
 			// update currentItem (also mauybe be worth doing even later in case the content doesn't load)
-			pg.currentIndex = index;
+			animate = index;
 			
 			// item already loaded & cached?
-			if (pg.loaded[index]) {
+			if (loaded[index]) {
 
 				// hide the current item
-				pg.call('switchItem', index);
+				laboite.call('switchItem', index);
 
 			} else {
 				
 				// show the loader element (not cached so expecting loading time)
-				pg.call('showLoader');
+				laboite.call('showLoader');
 				
 				// hide the item away
-				pg.call('hideItem', function() {
+				laboite.call('hideItem', function() {
 			
 					// type detection
-					var type = pg.call('getType', index);
+					var type = laboite.call('getType', index);
 					
 					// load the requested type (loadIframe is used if there is not special method for the requested type)
-					if (pg['load'+type]) pg.call('load'+type, index);
-					else pg.call('loadIframe', index);
+					if (laboite['load' + type]) laboite.call('load' + type, index);
+					else laboite.call('loadIframe', index);
 				});
 			};
 		},
@@ -377,20 +367,25 @@ $.laboite = function(root) {
 			// set default type
 			var type = 'Image';
 			
-			// only process if the plugin is not set to threat all requests as images
-			if (!pg.options.loadAsImage) {
+			// only proceed if the plugin is not set to threat all requests as images
+			if (!options.loadAsImage) {
 				
 				// type specific set for the item?
-				if (pg.options.data.items[index].type) type = data.items[index].type;
+				if (options.data.items[index].type) type = data.items[index].type;
 				else {
 					
 					/*
 						TO DO - DETECT REQUESTS TYPE				
 					*/
-					var source = pg.options.data.items[index].source,
-					bits = source.split('.'),
-					extension = bits[bits.length-1];
+					var source = options.data.items[index].source,
+						bits = source.split('.'),
+						extension = bits[bits.length - 1];
 					
+					// handle flash movies
+					if (extension === 'swf') type = 'Swf';
+
+					// if not an image we load the content inside an iframe
+					else if (!/jpg|jpeg|png|gif|bmp|tiff|svg/.test(extension)) type = 'Iframe';
 				};
 			};
 			
@@ -403,40 +398,59 @@ $.laboite = function(root) {
 		
 			// create a new image object
 			var img = new Image(),
-				src = pg.options.data.items[index]['source'] || false,
-				title = pg.options.data.items[index]['title'] || '';
+				src = options.data.items[index]['source'] || false,
+				title = options.data.items[index]['title'] || '';
 			
 			// if no valid source error out and terminate here
 			if (!src) {
-				pg.error('source not found for index "'+index+'"');
+				laboite.error('source not found for index "' + index + '"');
 				return false;
 			};
 			
 			img.onload = function() {
 				
 				// cache the image element
-				pg.loaded[index] = img;
+				loaded[index] = img;
 				
 				// update the content element
-				pg.uicache['content'].children().hide().end().append(pg.loaded[index]);
-				pg.uicache['container'].css({
-					height: $(pg.loaded[index]).height(),
-					width: $(pg.loaded[index]).width()
+				cache['content'].children().hide().end().append(loaded[index]);
+				cache['container'].css({
+					height: $(loaded[index]).height(),
+					width: $(loaded[index]).width()
 				});
 				
 				// if not injected we make sure to position the interface again once the content 
 				// has been loaded into the container
-				if (!pg.options.inject) pg.call('positionUI');
+				if (!options.inject) laboite.call('positionUI');
 				
 				// show the item
-				pg.call('showItem');
+				laboite.call('showItem');
 			};
 			img.src = src;
 			img.title = title;
 		},
 		
+		// handle element requests
+		loadElement: function(index) {},
+		
 		// handle flash requests
-		loadSwf: function(index) {},
+		loadSwf: function(index) {
+		
+			// create a new image object
+			var cur = $('#' + laboite.name + 'Swf' + index).size() ? $('#' + laboite.name + 'Swf' + index) : false,
+				div = cur || $('<div />').attr('id', laboite.name + 'Swf' + index),
+				src = options.data.items[index]['source'] || false,
+				title = options.data.items[index]['title'] || '',
+				embed = function() {
+					// update the content element
+					cache['content'].children().hide().end().append(div);
+					swfobject.embedSWF(src, laboite.name + 'Swf' + index, '400', '400', '9.0.0');
+				},
+				script;
+		
+			if (window.swfobject) embed();
+			else $.getScript(options.SWFObject, embed);
+		},
 		
 		// handle iframe requests
 		loadIframe: function(index) {},
@@ -445,25 +459,25 @@ $.laboite = function(root) {
 		positionUI: function() {
 		
 			// do we have a target
-			if (pg.options.modalTarget) {
+			if (options.modalTarget) {
 			
 				// if so grab it as well as it's top and left position
-				var $target = $(pg.options.modalTarget),
+				var $target = $(options.modalTarget),
 					pos = $target.offset();
 				
 				// make sure we have some data (error output?)
 				if (pos != null) {
 					
 					// position the layout
-					pg.layout.css({
-						top:pos.top+pg.options.modalOffsetTop,
-						left:pos.left+pg.options.modalOffsetLeft
+					layout.css({
+						top:pos.top + options.modalOffsetTop,
+						left:pos.left + options.modalOffsetLeft
 					});
 				};
 			} else {
 			
 				// center in the view port
-				pg.call('centerUI');
+				laboite.call('centerUI');
 			};	
 		},
 		
@@ -472,52 +486,54 @@ $.laboite = function(root) {
 			
 			// layout dimensions
 			var box = {
-				w: pg.layout.width(),
-				h: pg.layout.height()
+				w: layout.width(),
+				h: layout.height()
 			},
 			
 			// window dimension
 			win = {
-				w:$win.width(),
-				h:$win.height()
+				w: $win.width(),
+				h: $win.height()
 			},
 			
 			// caculate new top and left values
-			newTop = parseInt((win.h-box.h)/2),
-			newLeft = parseInt((win.w-box.w)/2);
+			newTop = parseInt((win.h - box.h) / 2),
+			newLeft = parseInt((win.w - box.w) / 2);
 			
 			// make sure the values are within the viewable area
 			if (newTop < 0) newTop = 0;
 			if (newLeft < 0) newLeft = 0;
 
 			// position the layout
-			pg.layout.css({
-				top:newTop,
-				left:newLeft
+			layout.css({
+				top: newTop,
+				left: newLeft
 			});
 		},
 		
 		// get the layout ready
 		getLayout: function() {
 		
+			var templ;
+		
 			// if the layout doesn't exists error out and stop here
-			if (!pg.layouts[pg.options.layout]) {
-				pg.error(pg.options.layout+' layout '+notfound);
+			if (!layouts[options.layout]) {
+				laboite.error(options.layout + ' layout not found!');
 				return false;
 			};
 			
 			// if language strings are not available we stop here
-			if (!pg.languages[pg.options.lang]) {
-				pg.error(pg.options.lang+' language '+notfound);
+			if (!languages[options.lang]) {
+				laboite.error(options.lang + ' language not found!');
 				return false;
 			};
 			
 			// grab the layout template
-			var templ = pg.layouts[pg.options.layout]();
+			templ = layouts[options.layout]();
 			
 			// replace language string inside the layouts
-			$.each(pg.languages[pg.options.lang], function(k, v) {
-				templ = templ.replace(new RegExp('\\${'+k+'}','g'), v);
+			$.each(languages[options.lang], function(k, v) {
+				templ = templ.replace(new RegExp('\\${' + k + '}', 'g'), v);
 			});
 			
 			// grab the layout template
@@ -528,16 +544,16 @@ $.laboite = function(root) {
 		openDimmer: function() {
 		
 			// is it needed?
-			if (pg.options.dimmer && pg.uicache['dimmer']) {
+			if (options.dimmer && cache['dimmer']) {
 			
 				// do we need to style it? We do it on every call so it allows for dynamic background 
 				// (performance? optional? watch properties?)
-				if (pg.options.dimmerMatchBackground) {
+				if (options.dimmerMatchBackground) {
 					
 					// variables
 					var 
 						// grab the body element
-						body = $(bodySel),
+						body = $('body:eq(0)'),
 						bg = 'background-',
 						
 						// CSS properties to copy over
@@ -551,12 +567,12 @@ $.laboite = function(root) {
 					// loop through css properties and copy if present
 					$.each(css, function(k, v) {
 						var prop = body.css(v);
-						if (prop != '') pg.uicache['dimmer'].css(v, prop);
+						if (prop != '') cache['dimmer'].css(v, prop);
 					});
 				};
 				
 				// we put it in place
-				pg.uicache['dimmer'].css({
+				cache['dimmer'].css({
 					position: 'absolute',
 					height: $doc.height(),
 					width: $doc.width(),
@@ -565,7 +581,7 @@ $.laboite = function(root) {
 				})
 				
 				// and we fade it in
-				.fadeTo(pg.options.dimmerFadeDuration, pg.options.dimmerOpacity);
+				.fadeTo(options.dimmerFadeDuration, options.dimmerOpacity);
 			};
 		},
 		
@@ -576,66 +592,72 @@ $.laboite = function(root) {
 			$win.bind('resize', function() {
 				
 				// adjust the dimension of the dimmer element
-				pg.uicache['dimmer'].css({
+				cache['dimmer'].css({
 					height: $doc.height(),
 					width: $doc.width()
 				});
 			});
 			
-			if (pg.options.modalKeepAtCenter) {
+			if (options.modalKeepAtCenter) {
 				$doc.bind('scroll', function() {
-					pg.call('centerUI');
+					laboite.call('centerUI');
 				});
 			};
 		},
 		
 		// unbind the events around the modal box
 		modalUnbind: function() {
-			$win.unbind('resize.'+pg.name+' scroll.'+pg.name);
-			$doc.unbind('scroll.'+pg.name);
+			$win.unbind('resize.' + laboite.name + ' scroll.' + laboite.name);
+			$doc.unbind('scroll.' + laboite.name);
 		},
 		
 		// close the dimmer element
 		closeDimmer: function() {
 		
 			// fade the dimmer out
-			pg.uicache['dimmer'].fadeTo(pg.options.dimmerFadeDuration, 0, function() {
+			cache['dimmer'].fadeTo(options.dimmerFadeDuration, 0, function() {
 				
 				// hide it
-				pg.uicache['dimmer'].hide();
+				cache['dimmer'].hide();
 				
 				// unbind window
-				$win.unbind('resize.'+pg.name);
+				$win.unbind('resize.' + laboite.name);
 			});
+		},
+		
+		// API to add effects to the current laboite instance (global one can be added via $.laboite.effects[name] = object)
+		addEffect: function(name, fx, overwrite) {
+			if (effects[name] && !overwritte) laboite.error(name + 'already exists!');
+			else effects[name] = fx;
 		},
 		
 		// function that reset totals (used whe an item is added or delete from the data set)
 		resetCount: function() {
 
 			// reset the internal count
-			pg.options.__count = pg.options.data.items.length;
+			options.__count = options.data.items.length;
 		},
 		
 		// collect data
 		getData: function() {
 			
 			// if we have a data URL set this take priroity over the element
-			if (pg.options.dataUrl) {
+			if (options.dataUrl) {
 				
 				// ajax call
 				$.ajax({
 				
 					// assign URL
-					url: pg.options.dataUrl,
+					url: options.dataUrl,
 					
 					// handle both json and jsonp requests (e.g. cross-domain requests)
-					dataType: pg.options.jsonp ? 'jsonp' : 'json',
+					dataType: options.jsonp ? 'jsonp' : 'json',
 					
 					// error handling
 					error: function() {
 					
 						// basic error reporting (can be improved to return more useful information about why the error occured)
-						pg.error(pg.options.dataUrl+' '+notfound);
+						laboite.error(options.dataUrl + ' not found');
 					},
 					
 					// success handling
@@ -645,17 +667,17 @@ $.laboite = function(root) {
 						if (data.items) {
 						
 							// assign the data
-							pg.options.data = data;
+							options.data = data;
 							
 							// run the plugin
-							pg.call('run');
+							laboite.call('run');
 						};
 					}
 				});	
 			}
 			
 			// otherwise we just build our data based on the dom
-			else pg.call('getDataFromDom');
+			else laboite.call('getDataFromDom');
 		},
 		
 		// get the data from the DOM
@@ -665,7 +687,7 @@ $.laboite = function(root) {
 			var items = [];
 			
 			// make sure out data variable is an object (if we come to hear it means it is false so far and it must be an object for us to attach the items to it later on)
-			pg.options.data = {};
+			options.data = {};
 			
 			// loop through each element and build our data object
 			root.each(function(i) {
@@ -677,7 +699,7 @@ $.laboite = function(root) {
 				items[i] = {};
 				
 				// loop through our attributes selectors
-				$.each(pg.options.attributes, function(k, v) {
+				$.each(options.attributes, function(k, v) {
 				
 					// attempt to grab attribute data (attr = false if attribute not present)
 					var attr = $this.attr(v);
@@ -688,29 +710,29 @@ $.laboite = function(root) {
 			});
 
 			// assign the data
-			pg.options.data.items = items;
+			options.data.items = items;
 			
 			// run!
-			pg.call('run');
+			laboite.call('run');
 		},
 		
 		// internal call function (handle callbacks dynamically)
 		call: function(method) {
 		
 			// any before method callback? 
-			if (pg.options.callbacks[method+'Before']) pg.options.callbacks[method+'Before']();
+			if (options.callbacks[method + 'Before']) options.callbacks[method + 'Before']();
 
 			// log our method calls
-			pg.log(method+'('+Array.prototype.slice.call(arguments, 1)+')');
+			laboite.log(method + '(' + Array.prototype.slice.call(arguments, 1) + ')');
 
 			// call method
-			var res = pg[method].apply(null, Array.prototype.slice.call(arguments, 1));
+			var res = laboite[method].apply(null, Array.prototype.slice.call(arguments, 1));
 			
 			// any after method callback?
-			if (pg.options.callbacks[method+'After']) pg.options.callbacks[method+'After']();
+			if (options.callbacks[method + 'After']) options.callbacks[method + 'After']();
 			
 			// return true or the result if any
-			return (!res) ? true : res;
+			return res || laboite;
 		},
 		
 		// return the value of the requested k in the current instance option
@@ -718,11 +740,11 @@ $.laboite = function(root) {
 		get: function(k) {
 			
 			// no key requested so just return the object
-			if (!k) return pg.options;
+			if (!k) return options;
 			
 			// if our key exists return its value, if not output an error
-			if (pg.options[k]) return pg.options[k];
-			else pg.error('get('+k+') '+notfound);
+			if (options[k]) return options[k];
+			else laboite.error('get(' + k + ') ' + notfound);
 		},
 		
 		// set / update a value in the instance options object for the requested key
@@ -730,19 +752,19 @@ $.laboite = function(root) {
 			
 			// we must have a key and a value
 			if (!k && !v) {
-				pg.error('set() missing arguments');
+				laboite.error('set() missing arguments');
 				return false;
-			} else pg.options[k] = v;
+			} else options[k] = v;
 		},
 		
 		// error reporting function
 		error: function(msg) {
 		
 			// are we in debug mode?
-			if (pg.options.debug) {
+			if (options.debug) {
 				
 				// build our message
-				msg = pg.name+': '+msg;
+				msg = laboite.name + ': ' + msg;
 				
 				// output it in the console if present otherwise use alert()
 				if (console.error) console.error(msg);
@@ -754,8 +776,8 @@ $.laboite = function(root) {
 		log: function(msg) {
 			
 			// if logging enable and console log available log away
-			if (pg.options.log && console.log) {
-				msg = pg.name+': '+msg;
+			if (options.log && console.log) {
+				msg = laboite.name + ': ' + msg;
 				console.log(msg);
 			};
 		}

@@ -19,7 +19,7 @@ $.fn.laboite = function() {
 			// make sure our first argument is a string
 			if (arguments[0].constructor == String) {
 				
-				// make sure it is a valid method (the user might not be using call which would check for that)
+				// make sure it is a valid method
 				if ($.isFunction($(this).data('laboite')[arguments[0]])) {
 				
 					// handle methods direct method calls as well as via cal method (that line handle both cases)

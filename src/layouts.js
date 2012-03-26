@@ -1,8 +1,10 @@
 /*
-	Minimum layout required for laboite to work properly
+	Minimum layout required by laboite
 	
 	<div class="laboite-wrap">
-		<div class="laboite-content"></div>
+		<div class="laboite-container">
+			<div class="laboite-content"></div>
+		</div>
 	</div>
 	
 */	

@@ -1,2 +1,2 @@
-/*! laboite 2 - Copyright 2012, Gilles Cochez - Released under the MIT, BSD and GPL Licenses. */
+/*! github.com/gillescochez/laboite */
 (function($){--laboite--})(jQuery);

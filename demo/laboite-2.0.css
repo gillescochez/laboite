@@ -2,6 +2,11 @@ body {
 	min-height:900px;
 }
 
+#canvas {
+	width:440px;
+	margin:0 auto;
+}
+
 /* Default element style */
 .laboite-dimmer {
 	background:#000;

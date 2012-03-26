@@ -2,7 +2,7 @@
 $.laboite.defaults = {
 
 	// language setting
-	lang: 'en', // set which language strings set to use
+	lang: 'en', // set which language to use
 	
 	// debugging tools
 	log: false, // if enabled all method called made using the call method will be logged into the console
@@ -14,10 +14,10 @@ $.laboite.defaults = {
 	jsonp: false, // set wether the ajax call for data should be json or jsonp (cross domain querying)
 	
 	// layout
-	layout: 'modal', // modal | popup | inline (can be extended via $.fn.laboite.layouts to use custom ones)
+	layout: 'modal', // modal | inline (can be extended via $.fn.laboite.layouts to use custom ones)
 	
 	// Options related to the injected UI
-	inject: false, // if true the UI will be inserted into the callee selector 
+	inject: false, // if true the UI will be inserted into the injectTarget selector 
 	injectType: 'append', // append | prepend | replace (where the injection should take place, if replace is set then the all content of the element is replaced with the UI
 	injectTarget: '', // selector used to grab the element in which to inject the UI (all jQuery selectors are supported)
 	
@@ -30,7 +30,16 @@ $.laboite.defaults = {
 	
 	// slideshow options
 	slideshow: false, // enable | disable slideshow functionality
-	slideshowDelay:5000, // delay between transition 
+	slideshowDelay:5000, // delay between transition
+	
+	// iFramme options
+	iFrameWidth: 640,
+	iFrameHeight: 480,
+	
+	// Flash option
+	flashWidth:640,
+	flashHeight:480,
+	SWFObject: 'https://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js',
 	
 	// dimmer options (for modal effect)
 	dimmer: true, // enable | disable the usage of a dimmer element for modal display
@@ -46,7 +55,7 @@ $.laboite.defaults = {
 	callbacks: {}, // hold callbacks if there is any
 	autorun: true, // enable/disable auto run (this need to be overwritten prior dom ready for it to be applied)
 	onEvent: 'click', // string used by the live binding function (see api.jquery.com for event types supported by live())
-	loadAsImage: false, // can be user to tell the plugin to threat all requests as images requests
+	loadAsImage: false, // can be use to tell the plugin to threat all requests as images requests
 	transitionDuration: 1000, // duration in milliseconds used by the animation transitioning IN and OUT item (full cycle without loading time = transitionDuration * 2)
 	
 	// hold various CSS strings used in the generated markup (fully customizable)
