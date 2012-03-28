@@ -15,7 +15,7 @@
 	<script type="text/javascript">
 	$(function() {
 
-		// Example binging some elements
+		// Modal with slideshow example
 		$('#items a.item').laboite({
 			continuous: true,
 			slideshow:true
@@ -23,7 +23,7 @@
 			fontWeight:'bold'
 		});
 	
-		// Example binging some elements
+		// Injected example
 		$('#items2 a.item').laboite({
 			inject: true,
 			injectTarget: '#canvas',
@@ -32,14 +32,12 @@
 		});
 	});
 	</script>
-	<script type="text/laboite-layout">
-	
-	</script>
 </head>
-<body>
+<body style="text-align:center;">
 <h1 id="modalTarget">Modal</h1>
+<p>With continuous slideshow options</p>
 <div id="items">
-	<a class="item" href="fireworks.swf" title="Image 1" data-laboite-maxWidth="640" data-laboite-maxHeight="480" data-laboite-description="This is the description">Fireworks</a>
+	<a class="item" href="images/image1.jpg" title="Image 1" data-laboite-maxWidth="640" data-laboite-maxHeight="480" data-laboite-description="This is the description">Image 1</a>
 	<a class="item" href="images/image2.jpg" title="Image 2" data-laboite-maxWidth="640" data-laboite-maxHeight="480" data-laboite-description="This is the description">Image 2</a>
 	<a class="item" href="images/image3.jpg" title="Image 3" data-laboite-maxWidth="640" data-laboite-maxHeight="480" data-laboite-description="This is the description">Image 3</a>
 	<a class="item" href="images/image4.jpg" title="Image 4" data-laboite-maxWidth="640" data-laboite-maxHeight="480" data-laboite-description="This is the description">Image 4</a>
@@ -47,6 +45,8 @@
 	<a class="item" href="images/image6.jpg" title="Image 6" data-laboite-maxWidth="640" data-laboite-maxHeight="480" data-laboite-description="This is the description">Image 6</a>
 </div>
 <h1>Injected</h1>
+<p>Original hyperlinks can be used to navigate between the items</p>
+<p>Using the inline layout and drop effect.</p>
 <div id="items2">
 	<a class="item" href="images/image1.jpg" title="Image 1" data-laboite-maxWidth="640" data-laboite-maxHeight="480" data-laboite-description="This is the description">Image 1</a>
 	<a class="item" href="images/image2.jpg" title="Image 2" data-laboite-maxWidth="640" data-laboite-maxHeight="480" data-laboite-description="This is the description">Image 2</a>

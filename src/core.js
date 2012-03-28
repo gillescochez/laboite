@@ -380,9 +380,11 @@ $.laboite = function(root) {
 					var source = options.data.items[index].source,
 						bits = source.split('.'),
 						extension = bits[bits.length - 1];
-					
+
 					// handle flash movies
 					if (extension === 'swf') type = 'Swf';
+					
+					else if (source.substr(0, 1) == '#') type = 'Element';
 
 					// if not an image we load the content inside an iframe
 					else if (!/jpg|jpeg|png|gif|bmp|tiff|svg/.test(extension)) type = 'Iframe';
@@ -431,7 +433,19 @@ $.laboite = function(root) {
 		},
 		
 		// handle element requests
-		loadElement: function(index) {},
+		loadElement: function(index) {
+
+			var	src = options.data.items[index]['source'] || false,
+				title = options.data.items[index]['title'] || '',
+				$el = $(src);
+				
+			loaded[index] = $el;
+			
+			cache['content'].children().hide().end().append($el.show());
+			
+			// show the item
+			laboite.call('showItem');
+		},
 		
 		// handle flash requests
 		loadSwf: function(index) {
@@ -442,9 +456,12 @@ $.laboite = function(root) {
 				src = options.data.items[index]['source'] || false,
 				title = options.data.items[index]['title'] || '',
 				embed = function() {
+				
 					// update the content element
 					cache['content'].children().hide().end().append(div);
 					swfobject.embedSWF(src, laboite.name + 'Swf' + index, '400', '400', '9.0.0');
+					loaded[index] = div;
+					laboite.call('showItem');
 				},
 				script;
 		
@@ -453,7 +470,22 @@ $.laboite = function(root) {
 		},
 		
 		// handle iframe requests
-		loadIframe: function(index) {},
+		loadIframe: function(index) {
+		
+			var $frame = $('<iframe />').css({
+				width:'400px',
+				height:'400px',
+				border:'none'
+			});
+			
+			$frame.attr('src', options.data.items[index]['source']);
+			$frame.bind('load', function() {
+				laboite.call('showItem');
+				loaded[index] = $frame;
+			});
+			cache['content'].children().hide().end().append($frame);
+			
+		},
 		
 		// sort out the UI positioning
 		positionUI: function() {

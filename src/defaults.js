@@ -32,6 +32,9 @@ $.laboite.defaults = {
 	slideshow: false, // enable | disable slideshow functionality
 	slideshowDelay:5000, // delay between transition
 	
+	// element embedding option
+	elementClone: false, // set to true to clone the targetted element
+	
 	// iFramme options
 	iFrameWidth: 640,
 	iFrameHeight: 480,

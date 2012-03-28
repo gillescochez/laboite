@@ -1,5 +1,7 @@
 body {
 	min-height:900px;
+	font-family:verdana;
+	font-size:12px;
 }
 
 #canvas {
@@ -15,6 +17,7 @@ body {
 	background:#fff;
 	border-radius:5px;
 	border:1px solid #ccc;
+	text-align:left;
 	font-family:verdana;
 	font-size:12px;
 	padding:10px;

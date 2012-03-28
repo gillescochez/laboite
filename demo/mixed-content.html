@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+	<meta charset="utf-8" />
+	<title>laboite version 2.0</title>
+	<link rel="stylesheet" href="laboite-2.0.css" />
+	<script type="text/javascript" src="jquery.js"></script>
+	<script type="text/javascript" src="easing.js"></script>
+	<script type="text/javascript" src="../src/core.js"></script>
+	<script type="text/javascript" src="../src/fn.js"></script>
+	<script type="text/javascript" src="../src/defaults.js"></script>
+	<script type="text/javascript" src="../src/effects.js"></script>
+	<script type="text/javascript" src="../src/layouts.js"></script>
+	<script type="text/javascript" src="../src/languages.js"></script>
+	<script type="text/javascript">
+	$(function() {
+		$('#items a.item').laboite();
+	});
+	</script>
+</head>
+<body style="text-align:center;">
+<h1 id="modalTarget">Mixed content in a modal</h1>
+<div id="items">
+	<a class="item" href="fireworks.swf" title="Flash">Flash</a>
+	<a class="item" href="images/image1.jpg" title="Image">Image</a>
+	<a class="item" href="#lipsum" title="Element">Element</a>
+	<a class="item" href="index-src.html" title="Iframe">Iframe</a>
+	<a class="item" href="images/image5.jpg" title="Image 5">?? PDFJS ??</a>
+</div>
+<div id="lipsum" style="display:none">
+<p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id felis erat. Cras tellus nibh, vulputate eget tristique eget, gravida at nulla. Nulla vel nulla eget nunc facilisis blandit. Duis sagittis, dolor sit amet ultricies sagittis, nibh massa tristique turpis, molestie lacinia lorem ipsum eget odio. Pellentesque tristique nibh est, molestie faucibus lorem. Cras libero nisl, tempus id consequat sed, eleifend ut lectus. Duis mattis fringilla tempus. Vestibulum felis tellus, consectetur sed ultrices vitae, eleifend at turpis. Donec eget neque odio, vel viverra massa. Vivamus in sollicitudin erat. Fusce vitae sapien sit amet enim condimentum accumsan. Aliquam eget eros sit amet nunc euismod consectetur.
+</p>
+<p>
+Donec consequat, purus sed imperdiet malesuada, lorem mauris egestas tortor, condimentum luctus erat sapien ut sem. Nulla facilisi. Nam dictum commodo dolor vitae auctor. Suspendisse ultricies nisl a lacus fermentum luctus. In ultricies commodo nulla sit amet lobortis. Ut pulvinar interdum nibh vitae facilisis. Mauris id elit in metus accumsan egestas ac dictum ligula. Cras eleifend sapien metus. Nunc libero mauris, mattis in lacinia id, semper vel elit. Donec et nulla sed libero faucibus ullamcorper. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam ut arcu felis. Quisque faucibus adipiscing tempus. Vestibulum accumsan dapibus cursus.
+</p>
+<p>
+Proin adipiscing rhoncus ligula at vulputate. Nam interdum dapibus felis, vel cursus massa condimentum sed. Morbi consectetur enim quis dolor facilisis id varius metus vestibulum. Vestibulum in sapien et nibh porttitor mattis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec faucibus nisl id est imperdiet eget consectetur purus posuere. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Morbi id dolor nec enim sagittis vehicula. Quisque vel nunc vitae risus interdum rutrum volutpat sed turpis. Duis cursus malesuada dapibus. Ut sit amet aliquam augue. In nec lorem et felis accumsan vestibulum eget vitae neque. Vestibulum ut libero sem, nec mattis justo. Nullam ullamcorper convallis lacus sed aliquet. Vestibulum lobortis sollicitudin orci id faucibus. Vivamus vel odio massa.
+</p>
+</div>
+</body>
+</html>
