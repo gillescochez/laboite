@@ -337,28 +337,19 @@ $.laboite = function(root) {
 			// update currentItem (also mauybe be worth doing even later in case the content doesn't load)
 			animate = index;
 			
-			// item already loaded & cached?
-			if (loaded[index]) {
-
-				// hide the current item
-				laboite.call('switchItem', index);
-
-			} else {
-				
-				// show the loader element (not cached so expecting loading time)
-				laboite.call('showLoader');
-				
-				// hide the item away
-				laboite.call('hideItem', function() {
+			// show the loader element (not cached so expecting loading time)
+			if (!loaded[index]) laboite.call('showLoader');
 			
-					// type detection
-					var type = laboite.call('getType', index);
-					
-					// load the requested type (loadIframe is used if there is not special method for the requested type)
-					if (laboite['load' + type]) laboite.call('load' + type, index);
-					else laboite.call('loadIframe', index);
-				});
-			};
+			// hide the item away
+			laboite.call('hideItem', function() {
+		
+				// type detection
+				var type = laboite.call('getType', index);
+				
+				// load the requested type (loadIframe is used if there is not special method for the requested type)
+				if (laboite['load' + type]) laboite.call('load' + type, index);
+				else laboite.call('loadIframe', index);
+			});
 		},
 		
 		// detect the type of content based on it's request url
@@ -398,6 +389,12 @@ $.laboite = function(root) {
 		// load image requests
 		loadImage: function(index) {
 		
+			if (loaded[index]) {
+				loaded[index].show();
+				laboite.call('resizeContainer', loaded[index].width(), loaded[index].height());
+				return;
+			}
+		
 			// create a new image object
 			var img = new Image(),
 				src = options.data.items[index]['source'] || false,
@@ -412,36 +409,36 @@ $.laboite = function(root) {
 			img.onload = function() {
 				
 				// cache the image element
-				loaded[index] = img;
+				loaded[index] = $(img);
 				
 				// update the content element
 				cache['content'].children().hide().end().append(loaded[index]);
-				cache['container'].css({
-					height: $(loaded[index]).height(),
-					width: $(loaded[index]).width()
-				});
 				
-				// if not injected we make sure to position the interface again once the content 
-				// has been loaded into the container
-				if (!options.inject) laboite.call('positionUI');
-				
-				// show the item
-				laboite.call('showItem');
+				laboite.call('resizeContainer', loaded[index].width(), loaded[index].height());
 			};
+			
 			img.src = src;
 			img.title = title;
 		},
 		
 		// handle element requests
 		loadElement: function(index) {
+		
+			if (loaded[index]) {
+				loaded[index].show();
+				laboite.call('resizeContainer', loaded[index].width(), loaded[index].height());
+				return;
+			}
 
 			var	src = options.data.items[index]['source'] || false,
 				title = options.data.items[index]['title'] || '',
-				$el = $(src);
+				$el = options.elementClone ? $(src).clone() : $(src);
 				
 			loaded[index] = $el;
 			
 			cache['content'].children().hide().end().append($el.show());
+			
+			laboite.call('resizeContainer', loaded[index].width(), loaded[index].height());
 			
 			// show the item
 			laboite.call('showItem');
@@ -450,18 +447,24 @@ $.laboite = function(root) {
 		// handle flash requests
 		loadSwf: function(index) {
 		
+			if (loaded[index]) {
+				loaded[index].show();
+				laboite.call('resizeContainer', options.flashWidth, options.flashHeight);
+				return;
+			}
+		
 			// create a new image object
 			var cur = $('#' + laboite.name + 'Swf' + index).size() ? $('#' + laboite.name + 'Swf' + index) : false,
-				div = cur || $('<div />').attr('id', laboite.name + 'Swf' + index),
+				$div = cur || $('<div />').attr('id', laboite.name + 'Swf' + index),
 				src = options.data.items[index]['source'] || false,
 				title = options.data.items[index]['title'] || '',
 				embed = function() {
 				
 					// update the content element
-					cache['content'].children().hide().end().append(div);
-					swfobject.embedSWF(src, laboite.name + 'Swf' + index, '400', '400', '9.0.0');
-					loaded[index] = div;
-					laboite.call('showItem');
+					cache['content'].children().hide().end().append($div);
+					swfobject.embedSWF(src, laboite.name + 'Swf' + index, options.flashWidth, options.flashHeight, options.flashVersion);
+					laboite.call('resizeContainer', options.flashWidth, options.flashHeight);
+					loaded[index] = $('#' + laboite.name + 'Swf' + index);
 				},
 				script;
 		
@@ -472,19 +475,56 @@ $.laboite = function(root) {
 		// handle iframe requests
 		loadIframe: function(index) {
 		
+			if (loaded[index]) {
+				loaded[index].show();
+				laboite.call('resizeContainer', options.iFrameWidth, options.iFrameHeight);
+				return;
+			}
+		
 			var $frame = $('<iframe />').css({
-				width:'400px',
-				height:'400px',
+				width: options.iFrameWidth,
+				height: options.iFrameHeight,
 				border:'none'
 			});
 			
 			$frame.attr('src', options.data.items[index]['source']);
 			$frame.bind('load', function() {
-				laboite.call('showItem');
 				loaded[index] = $frame;
+				laboite.call('resizeContainer', options.iFrameWidth, options.iFrameHeight);
 			});
-			cache['content'].children().hide().end().append($frame);
 			
+			cache['content'].children().hide().end().append($frame);
+		},
+		
+		resizeContainer: function(width, height) {
+		
+			if (!options.resize) {
+				laboite.call('showItem');
+				return;
+			};
+		
+			// maximums
+			if (options.maxHeight && height > options.maxHeight) height = options.maxHeight;
+			if (options.maxWidth && width > options.maxWidth) width = options.maxWidth;
+			
+			// minimums
+			if (options.minHeight && height < options.minHeight) height = options.minHeight;
+			if (options.minWidth && width < options.minWidth) width = options.minWidth;
+			
+
+			cache['container'].animate({
+				height: height,
+				width: width
+			}, {
+				duration: options.resizeDuration,
+				easing: options.resizeEasing,
+				step: function() {
+					laboite.call('positionUI');
+				},
+				complete: function() {
+					laboite.call('showItem');
+				}
+			});
 		},
 		
 		// sort out the UI positioning
@@ -621,17 +661,18 @@ $.laboite = function(root) {
 		modalBind: function() {
 				
 			// bind the window on resize
-			$win.bind('resize', function() {
+			$win.bind('resize.' + laboite.name + ' scroll.' + laboite.name, function() {
 				
 				// adjust the dimension of the dimmer element
 				cache['dimmer'].css({
 					height: $doc.height(),
 					width: $doc.width()
 				});
+				laboite.call('centerUI');
 			});
 			
 			if (options.modalKeepAtCenter) {
-				$doc.bind('scroll', function() {
+				$doc.bind('scroll.' + laboite.name, function() {
 					laboite.call('centerUI');
 				});
 			};

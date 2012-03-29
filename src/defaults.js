@@ -28,9 +28,14 @@ $.laboite.defaults = {
 	modalOffsetTop: 0, // modal box top offset
 	modalOffsetLeft: 0, // modal box left offset
 	
+	// resize to content animation settings
+	resize: true, // enable/disable resizing of the container
+	resizeDuration: 350, // the duration of the animation
+	resizeEasing: 'linear', // easing to use
+	
 	// slideshow options
 	slideshow: false, // enable | disable slideshow functionality
-	slideshowDelay:5000, // delay between transition
+	slideshowDelay:3500, // delay between transition
 	
 	// element embedding option
 	elementClone: false, // set to true to clone the targetted element
@@ -42,13 +47,20 @@ $.laboite.defaults = {
 	// Flash option
 	flashWidth:640,
 	flashHeight:480,
+	flashVersion: '9.0.0',
 	SWFObject: 'https://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js',
+	
+	// container dimension limits
+	maxWidth: null,
+	maxheight: null,
+	minWidth: null,
+	minheight: null,
 	
 	// dimmer options (for modal effect)
 	dimmer: true, // enable | disable the usage of a dimmer element for modal display
 	dimmerOpacity: 0.5, // amount of opacity of the dimmer element
 	dimmerBindToClose: true, // enable | disable binding of the dimmer element so clicking it close the UI
-	dimmerFadeDuration: 200, // duration in miliseconds of the duration of the fading effect (0 = no fade effect)
+	dimmerFadeDuration: 250, // duration in miliseconds of the duration of the fading effect (0 = no fade effect)
 	dimmerMatchBackground: false, // enable | disable detecting and using the background of the body as dimmer styling
 	
 	// misc
