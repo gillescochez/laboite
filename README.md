@@ -14,11 +14,15 @@ and languages which can be extended very easily.
 
 #### Basic usage as a lightbox
 
+##### JS
+
 ```javascript
 $(function() {
 	$('#items a.item').laboite();
 });
 ```
+
+##### HTML
 
 ```html
 <div id="items">
@@ -36,6 +40,8 @@ $(function() {
 
 ### Inline gallery example
 
+##### JS
+
 ```javascript
 $(function() {
 	$('#items a.item').laboite({
@@ -46,6 +52,8 @@ $(function() {
 	});
 });
 ```
+
+##### HTML
 
 ```html
 <div id="items">
