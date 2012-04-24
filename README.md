@@ -1,3 +1,7 @@
+# NOTICE
+
+Project still  under development use at your  own risk.
+
 # La Boite 2
 
 La Boite (the box in french) 2 is a jQuery "class" / plugin which aims to lay the ground work 
