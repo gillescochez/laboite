@@ -195,6 +195,59 @@ attributes: {
 
 ```
 
+## The transition effects object
+
+Laboite uses an public objects to store effects transitions in order to provide an API to allow the creation of custom transition effects keeping in the spirit of pushing for customized interfaces.
+
+Below is an example of a custom effects, the comments will explain the effect of each property.
+
+```javascript
+
+$.extend($.laboite.effects, {
+
+    // Drop effect (to illustrate usage of the init object)
+    drop: {
+    
+        // hide transition effect
+        hide: {
+
+            // CSS rules for the end state
+            css: {
+                bottom:'-120%',
+                opacity:0
+            },
+
+            // configuration for the animation
+            config: {
+                duration:1000
+            }
+        },
+        
+        // show transition effect
+        show: { 
+
+            // CSS Rules apply to the element prior the animation starts
+            init: {s
+                bottom:'120%'
+            },
+
+            // CSS rules for the end state
+            css: {
+                bottom:'0%',
+                opacity:1
+            },
+
+            // configuration for the animation
+            config: {
+                duration:1000
+            }
+        }
+    }
+});
+
+
+```
+
 ## La Boite version 1
 http://laboite.codeserenity.com
 
