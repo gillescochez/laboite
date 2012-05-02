@@ -1,6 +1,6 @@
 # NOTICE
 
-Project still  under development use at your  own risk.
+Project is doing quite a lot already but not test suite yet so there is still room for errors.
 
 # La Boite 2
 
@@ -13,6 +13,17 @@ have the same lightbox design which doesn't always match the actual website desi
 
 La Boite try to simplify the customization process by providing libraries of effects, layouts
 and languages which can be extended very easily. 
+
+## Features
+
+* Handle images, flash (using swfobject), element and iframe
+* Effects are stored in an object which can be extended
+* Markup layouts are stored in an object which can be extended
+* Languages strings are stored in an object which can be extended
+* Every methods called can have a callback function (callbacks are attach to a callback object and match the method name)
+* Display the interface as a modal or injected on the page
+* It can be passed the data, grab it from the DOM or fetch it via ajax
+* much more...
 
 ## Usage
 
@@ -168,14 +179,6 @@ css: {
 	item: 'item', // item element class
 	itemWrap: 'item-wrap', // item wrapper class (added on each items)
 
-	// those are status classes that are added to the main wrapper depending on various status
-	// NOT IN USE YET (MIGHT TAKE THEM OUT LATER)
-	slideshowDisabled: 'slideshowDisabled',
-	slideshowOn: 'slideshowOn',
-	slideshowOff: 'slideshowOff',
-	itemLoading: 'itemLoading',
-	itemLoaded: 'itemLoaded',
-
 	// misc
 	dimmer: 'dimmer'
 },
@@ -227,7 +230,7 @@ $.extend($.laboite.effects, {
         show: { 
 
             // CSS Rules apply to the element prior the animation starts
-            init: {s
+            init: {
                 bottom:'120%'
             },
 
