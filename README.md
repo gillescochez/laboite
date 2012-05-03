@@ -22,6 +22,11 @@ have the same lightbox design which doesn't always match the actual website desi
 La Boite try to simplify the customization process by providing libraries of effects, layouts
 and languages which can be extended very easily.
 
+La Boite 2 is not officially released yet as it is still under development, need some polish and
+ideally a test suite, but it is usable and good enough to play around with.
+
+Feel free to fork and join in the fun :)
+
 [Menu](#menu)
 
 # Features
