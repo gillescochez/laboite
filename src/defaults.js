@@ -78,44 +78,44 @@ $.laboite.defaults = {
 	// NOTE: IF CLASSES THAT ARE BINDED TO AN ACTION ARE CHANGED THE BINDING MUST BE DONE MANUALLY!
 	css: {
 
-		// common prefix
-		prefix: 'laboite-', // prefix added to all CSS classes
-		
-		// buttons
-		play: 'play', // play button CSS class
-		pause: 'pause', // pause button CSS class
-		stop: 'stop', // stop button CSS class
-		previous: 'previous', // next button CSS class
-		next: 'next', // next button CSS class
+            // common prefix
+            prefix: 'laboite-', // prefix added to all CSS classes
+            
+            // buttons
+            play: 'play', // play button CSS class
+            pause: 'pause', // pause button CSS class
+            stop: 'stop', // stop button CSS class
+            previous: 'previous', // next button CSS class
+            next: 'next', // next button CSS class
 
-		// the following are used by autorun to detect interface need and items
-		autorun: 'autorun', // autorun CSS class (check it is still used)
-		items: 'items', // item list wrapper element class
-		item: 'item', // item element class
-		itemWrap: 'item-wrap', // item wrapper class (added on each items)
+            // the following are used by autorun to detect interface need and items
+            autorun: 'autorun', // autorun CSS class (check it is still used)
+            items: 'items', // item list wrapper element class
+            item: 'item', // item element class
+            itemWrap: 'item-wrap', // item wrapper class (added on each items)
 
-		// those are status classes that are added to the main wrapper depending on various status
-		// NOT IN USE YET (MIGHT TAKE THEM OUT LATER)
-		slideshowDisabled: 'slideshowDisabled',
-		slideshowOn: 'slideshowOn',
-		slideshowOff: 'slideshowOff',
-		itemLoading: 'itemLoading',
-		itemLoaded: 'itemLoaded',
+            // those are status classes that are added to the main wrapper depending on various status
+            // NOT IN USE YET (MIGHT TAKE THEM OUT LATER)
+            slideshowDisabled: 'slideshowDisabled',
+            slideshowOn: 'slideshowOn',
+            slideshowOff: 'slideshowOff',
+            itemLoading: 'itemLoading',
+            itemLoaded: 'itemLoaded',
 
-		// misc
-		dimmer: 'dimmer'
+            // misc
+            dimmer: 'dimmer'
 	},
 	
 	// attributes to be used to pull item options and data out of a DOM element
 	attributes: {
-		title: 'title',
-		source: 'href',
-		maxWidth: 'data-laboite-maxWidth',
-		maxHeight: 'data-laboite-maxHeight',
-		minWidth: 'data-laboite-minWidth',
-		minHeight: 'data-laboite-minHeight',
-		link: 'data-laboite-link',
-		linkTarget: 'data-laboite-linkTarget',
-		description: 'data-laboite-description'
+            title: 'title',
+            source: 'href',
+            maxWidth: 'data-laboite-maxWidth',
+            maxHeight: 'data-laboite-maxHeight',
+            minWidth: 'data-laboite-minWidth',
+            minHeight: 'data-laboite-minHeight',
+            link: 'data-laboite-link',
+            linkTarget: 'data-laboite-linkTarget',
+            description: 'data-laboite-description'
 	}
 };

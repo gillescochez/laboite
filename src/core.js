@@ -1,19 +1,19 @@
 // caching few global elements
 var $win = $(window),
-	$doc = $(document);
+    $doc = $(document);
 
 // plugin declaration
 $.laboite = function(root) {
 	
 	// instance self reference and variables
 	var laboite = this,
-		options, layouts, effects, languages, 
-		cache = [], 
-		loaded = [], 
-		indom = false, 
-		layout = null, 
-		animate = false,
-		currentIndex, data;
+            options, layouts, effects, languages, 
+            cache = [], 
+            loaded = [], 
+            indom = false, 
+            layout = null, 
+            animate = false,
+            currentIndex, data;
 	
 	// extend
 	$.extend(laboite, {
@@ -87,8 +87,8 @@ $.laboite = function(root) {
 				
 				// grab all the classes, split them and store the count
 				var classes = this.className,
-					bits = classes.split(' '),
-					nb = classes.length - 1;
+                                    bits = classes.split(' '),
+                                    nb = classes.length - 1;
 				
 				// make sure we at least have one class before we continue
 				if (nb) {
@@ -146,8 +146,8 @@ $.laboite = function(root) {
 				if ('append' == options.injectType || 'prepend' == options.injectType) $target[options.injectType](layout);
 				else if ('replace' == options.injectType) $target.html(layout);
 				else {
-					laboite.error('invalid injectType');
-					return false;
+                                    laboite.error('invalid injectType');
+                                    return false;
 				};
 				
 				// mark as in

@@ -4,20 +4,20 @@
 
 // caching few global elements
 var $win = $(window),
-	$doc = $(document);
+    $doc = $(document);
 
 // plugin declaration
 $.laboite = function(root) {
 	
 	// instance self reference and variables
 	var laboite = this,
-		options, layouts, effects, languages, 
-		cache = [], 
-		loaded = [], 
-		indom = false, 
-		layout = null, 
-		animate = false,
-		currentIndex, data;
+            options, layouts, effects, languages, 
+            cache = [], 
+            loaded = [], 
+            indom = false, 
+            layout = null, 
+            animate = false,
+            currentIndex, data;
 	
 	// extend
 	$.extend(laboite, {
@@ -91,8 +91,8 @@ $.laboite = function(root) {
 				
 				// grab all the classes, split them and store the count
 				var classes = this.className,
-					bits = classes.split(' '),
-					nb = classes.length - 1;
+                                    bits = classes.split(' '),
+                                    nb = classes.length - 1;
 				
 				// make sure we at least have one class before we continue
 				if (nb) {
@@ -150,8 +150,8 @@ $.laboite = function(root) {
 				if ('append' == options.injectType || 'prepend' == options.injectType) $target[options.injectType](layout);
 				else if ('replace' == options.injectType) $target.html(layout);
 				else {
-					laboite.error('invalid injectType');
-					return false;
+                                    laboite.error('invalid injectType');
+                                    return false;
 				};
 				
 				// mark as in
@@ -860,6 +860,7 @@ $.laboite = function(root) {
 		}
 	});
 };
+
 // plugin default settings
 $.laboite.defaults = {
 
@@ -940,208 +941,179 @@ $.laboite.defaults = {
 	// NOTE: IF CLASSES THAT ARE BINDED TO AN ACTION ARE CHANGED THE BINDING MUST BE DONE MANUALLY!
 	css: {
 
-		// common prefix
-		prefix: 'laboite-', // prefix added to all CSS classes
-		
-		// buttons
-		play: 'play', // play button CSS class
-		pause: 'pause', // pause button CSS class
-		stop: 'stop', // stop button CSS class
-		previous: 'previous', // next button CSS class
-		next: 'next', // next button CSS class
+            // common prefix
+            prefix: 'laboite-', // prefix added to all CSS classes
+            
+            // buttons
+            play: 'play', // play button CSS class
+            pause: 'pause', // pause button CSS class
+            stop: 'stop', // stop button CSS class
+            previous: 'previous', // next button CSS class
+            next: 'next', // next button CSS class
 
-		// the following are used by autorun to detect interface need and items
-		autorun: 'autorun', // autorun CSS class (check it is still used)
-		items: 'items', // item list wrapper element class
-		item: 'item', // item element class
-		itemWrap: 'item-wrap', // item wrapper class (added on each items)
+            // the following are used by autorun to detect interface need and items
+            autorun: 'autorun', // autorun CSS class (check it is still used)
+            items: 'items', // item list wrapper element class
+            item: 'item', // item element class
+            itemWrap: 'item-wrap', // item wrapper class (added on each items)
 
-		// those are status classes that are added to the main wrapper depending on various status
-		// NOT IN USE YET (MIGHT TAKE THEM OUT LATER)
-		slideshowDisabled: 'slideshowDisabled',
-		slideshowOn: 'slideshowOn',
-		slideshowOff: 'slideshowOff',
-		itemLoading: 'itemLoading',
-		itemLoaded: 'itemLoaded',
+            // those are status classes that are added to the main wrapper depending on various status
+            // NOT IN USE YET (MIGHT TAKE THEM OUT LATER)
+            slideshowDisabled: 'slideshowDisabled',
+            slideshowOn: 'slideshowOn',
+            slideshowOff: 'slideshowOff',
+            itemLoading: 'itemLoading',
+            itemLoaded: 'itemLoaded',
 
-		// misc
-		dimmer: 'dimmer'
+            // misc
+            dimmer: 'dimmer'
 	},
 	
 	// attributes to be used to pull item options and data out of a DOM element
 	attributes: {
-		title: 'title',
-		source: 'href',
-		maxWidth: 'data-laboite-maxWidth',
-		maxHeight: 'data-laboite-maxHeight',
-		minWidth: 'data-laboite-minWidth',
-		minHeight: 'data-laboite-minHeight',
-		link: 'data-laboite-link',
-		linkTarget: 'data-laboite-linkTarget',
-		description: 'data-laboite-description'
+            title: 'title',
+            source: 'href',
+            maxWidth: 'data-laboite-maxWidth',
+            maxHeight: 'data-laboite-maxHeight',
+            minWidth: 'data-laboite-minWidth',
+            minHeight: 'data-laboite-minHeight',
+            link: 'data-laboite-link',
+            linkTarget: 'data-laboite-linkTarget',
+            description: 'data-laboite-description'
 	}
 };
+
 // object containing the transitional effect for laboite
 $.laboite.effects = {
 
-	// required by laboite to handle basic show/hide transition
-	none: {
-		hide: {
-			css: {display:'none'},
-			config: {duration:0}
-		},
-		show: {
-			css: {display:''},
-			config: {duration:0}
-		}
-	},
-	
-	// Fading transition
-	fade: {
-		
-		// hidden end state
-		hide: { 
-			css: {opacity:0},
-			config: {duration:1000}
-		},
-		
-		// show end state
-		show: { 
-			css: {opacity:1},
-			config: {duration:1000}
-		}
-	},
-	
-	// Drop effect (to illustrate usage of the init object)
-	drop: {
-	
-		// hidden end state
-		hide: { 
-			css: {
-				bottom:'-120%',
-				opacity:0
-			},
-			config: {duration:1000}
-		},
-		
-		// show end state
-		show: { 
-			init: { // applied to the element before the animation starts
-				bottom:'120%'
-			},
-			css: {
-				bottom:'0%',
-				opacity:1
-			},
-			config: {duration:1000}
-		}
-	}
+    // required by laboite to handle basic show/hide transition
+    none: {
+        hide: {
+            css: {display:'none'},
+            config: {duration:0}
+        },
+        show: {
+            css: {display:''},
+            config: {duration:0}
+        }
+    },
+    
+    // Fading transition
+    fade: {
+            
+        // hidden end state
+        hide: { 
+            css: {opacity:0},
+            config: {duration:1000}
+        },
+        
+        // show end state
+        show: { 
+            css: {opacity:1},
+            config: {duration:1000}
+        }
+    }
 }; 
+
 // language strings object
 $.laboite.languages = {
 	
-	// english
-	'en': {
-		close: 'Close',
-		previous: 'Previous',
-		next: 'Next',
-		play: 'Play',
-		pause: 'Pause',
-		stop: 'Stop',
-		stats: '${current} out of ${total}'
-	},
-	
-	// french
-	'fr': {
-		close: 'Fermer',
-		previous: 'Precedent',
-		next: 'Suivant',
-		play: 'Commencer',
-		pause: 'Pauser',
-		stop: 'Arreter',
-		stats: '${current} de ${total}'
-	}
+    // english
+    'en': {
+        close: 'Close',
+        previous: 'Previous',
+        next: 'Next',
+        play: 'Play',
+        pause: 'Pause',
+        stop: 'Stop',
+        stats: '${current} out of ${total}'
+    },
+    
+
 };
+
 /*
-	Minimum layout required by laboite
-	
-	<div class="laboite-wrap">
-		<div class="laboite-container">
-			<div class="laboite-content"></div>
-		</div>
-	</div>
-	
+    Minimum layout required by laboite
+    
+    <div class="laboite-wrap">
+        <div class="laboite-container">
+            <div class="laboite-content"></div>
+        </div>
+    </div>
+    
 */	
 	
-	// plugin default layouts
-	$.laboite.layouts = {
-	
-		modal: function() {
-		
-			var layout = '<div class="laboite-wrap laboite-modal">';
-					layout += '<a href="#close" class="laboite-close"><span>${close}</span></a>';
-					layout += '<div class="laboite-container"><div class="laboite-content"></div></div>';
-					layout += '<div class="laboite-controls">';
-						layout += '<a href="#previous" class="laboite-button laboite-previous"><span>${previous}</span></a>';
-						layout += '<a href="#next" class="laboite-button laboite-next"><span>${next}</span></a>';
-						layout += '<a href="#play" class="laboite-button laboite-play"><span>${play}</span></a>';
-						layout += '<a href="#pause" class="laboite-button laboite-pause"><span>${pause}</span></a>';
-						layout += '<a href="#stop" class="laboite-button laboite-stop"><span>${stop}</span></a>';
-						layout += '<span class="laboite-stats"></span>';
-					layout += '</div>';
-				layout += '</div>';
-				
-			return layout;
-		},
-		inline: function() {
-		
-			var layout = '<div class="laboite-wrap laboite-inline">';
-					layout += '<div class="laboite-controls">';
-						layout += '<a href="#previous" class="laboite-button laboite-previous"><span>${previous}</span></a>';
-						layout += '<a href="#next" class="laboite-button laboite-next"><span>${next}</span></a>';
-						layout += '<a href="#play" class="laboite-button laboite-play"><span>${play}</span></a>';
-						layout += '<a href="#pause" class="laboite-button laboite-pause"><span>${pause}</span></a>';
-						layout += '<a href="#stop" class="laboite-button laboite-stop"><span>${stop}</span></a>';
-						layout += '<span class="laboite-stats"></span>';
-					layout += '</div>';
-					layout += '<div class="laboite-container"><div class="laboite-content"></div></div>';
-				layout += '</div>';
-				
-			return layout;
-		}
-	};
+// plugin default layouts
+$.laboite.layouts = {
+
+    modal: function() {
+    
+        var layout = '<div class="laboite-wrap laboite-modal">';
+                layout += '<a href="#close" class="laboite-close"><span>${close}</span></a>';
+                layout += '<div class="laboite-container"><div class="laboite-content"></div></div>';
+                layout += '<div class="laboite-controls">';
+                    layout += '<a href="#previous" class="laboite-button laboite-previous"><span>${previous}</span></a>';
+                    layout += '<a href="#next" class="laboite-button laboite-next"><span>${next}</span></a>';
+                    layout += '<a href="#play" class="laboite-button laboite-play"><span>${play}</span></a>';
+                    layout += '<a href="#pause" class="laboite-button laboite-pause"><span>${pause}</span></a>';
+                    layout += '<a href="#stop" class="laboite-button laboite-stop"><span>${stop}</span></a>';
+                    layout += '<span class="laboite-stats"></span>';
+                layout += '</div>';
+            layout += '</div>';
+                
+        return layout;
+    },
+    inline: function() {
+    
+        var layout = '<div class="laboite-wrap laboite-inline">';
+                layout += '<div class="laboite-controls">';
+                    layout += '<a href="#previous" class="laboite-button laboite-previous"><span>${previous}</span></a>';
+                    layout += '<a href="#next" class="laboite-button laboite-next"><span>${next}</span></a>';
+                    layout += '<a href="#play" class="laboite-button laboite-play"><span>${play}</span></a>';
+                    layout += '<a href="#pause" class="laboite-button laboite-pause"><span>${pause}</span></a>';
+                    layout += '<a href="#stop" class="laboite-button laboite-stop"><span>${stop}</span></a>';
+                    layout += '<span class="laboite-stats"></span>';
+                layout += '</div>';
+                layout += '<div class="laboite-container"><div class="laboite-content"></div></div>';
+            layout += '</div>';
+                
+        return layout;
+    }
+};
+
 // jQuery plugin declaration
 $.fn.laboite = function() {
 
-	// is the laboite "class" already declared for the element
-	if (!$(this).data('laboite')) {
-	
-		// if not we declare it
-		$(this).data('laboite', new $.laboite(this));
-		
-		// we can then run the initialization function
-		$(this).data('laboite')['init'].apply(null, arguments);
-	
-	// if the class is already started we look to handle method calls
-	} else {
-	
-		// make sure we have some arguments
-		if (arguments.length) {
-		
-			// make sure our first argument is a string
-			if (arguments[0].constructor == String) {
-				
-				// make sure it is a valid method
-				if ($.isFunction($(this).data('laboite')[arguments[0]])) {
-				
-					// handle methods direct method calls as well as via cal method (that line handle both cases)
-					var res = $(this).data('laboite')[arguments[0]].apply(null, Array.prototype.slice.call(arguments, 1));
-				};
-			};
-		};
-	};
-	
-	// return the value of a method call (if any) or conserve chainability
-	return res || this;
+    // is the laboite "class" already declared for the element
+    if (!$(this).data('laboite')) {
+    
+        // if not we declare it
+        $(this).data('laboite', new $.laboite(this));
+        
+        // we can then run the initialization function
+        $(this).data('laboite')['init'].apply(null, arguments);
+    
+    // if the class is already started we look to handle method calls
+    } else {
+    
+        // make sure we have some arguments
+        if (arguments.length) {
+        
+            // make sure our first argument is a string
+            if (arguments[0].constructor == String) {
+                    
+                // make sure it is a valid method
+                if ($.isFunction($(this).data('laboite')[arguments[0]])) {
+                
+                    // handle methods direct method calls as well as via cal method (that line handle both cases)
+                    var res = $(this).data('laboite')[arguments[0]].apply(null, Array.prototype.slice.call(arguments, 1));
+                };
+            };
+        };
+    };
+    
+    // return the value of a method call (if any) or conserve chainability
+    return res || this;
 };
+
 })(jQuery);

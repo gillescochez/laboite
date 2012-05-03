@@ -1,8 +1,15 @@
-# NOTICE
 
-Project is doing quite a lot already (see the demo folder) but no test suite yet and there is some polish needed here and there.
+* [Introduction](#la-boite-2)
+* [Features](#features)
+* [Options](#options)
+* [Setting callbacks](#setting-callbacks)
+* [Custom transitions](#custom-transitions)
+* [Custom layouts](#custom-layouts)
+* [Custom transitions](#custom-languages)
+* [old version](#la-boite-v1)
 
-# La Boite 2
+
+# Introduction
 
 La Boite (the box in french) 2 is a jQuery "class" / plugin which aims to lay the ground work 
 necessary for building custom lightbox / modal viewer, with some customization you could even 
@@ -12,9 +19,9 @@ The styling is minimal on purpose to push for customization, too many websites, 
 have the same lightbox design which doesn't always match the actual website design.
 
 La Boite try to simplify the customization process by providing libraries of effects, layouts
-and languages which can be extended very easily. 
+and languages which can be extended very easily.
 
-## Features
+# Features
 
 * Handle images, flash (using swfobject), element and iframe
 * Effects are stored in an object which can be extended
@@ -25,77 +32,72 @@ and languages which can be extended very easily.
 * It can be passed the data, grab it from the DOM or fetch it via ajax
 * much more...
 
-## Usage
+# Usage
 
-#### Basic usage as a lightbox
+### In modal mode
 
-##### JS
+#### JS
 
 ```javascript
 $(function() {
-	$('#items a.item').laboite();
+    $('#items a.item').laboite();
 });
 ```
 
-##### HTML
+#### HTML
 
 ```html
 <div id="items">
-	<a class="item" href="fireworks.swf" title="Flash">Flash</a>
-	<a class="item" href="images/image1.jpg" title="Image">Image</a>
-	<a class="item" href="#lipsum" title="Element">Element</a>
-	<a class="item" href="index-src.html" title="Iframe">Iframe</a>
+    <a class="item" href="fireworks.swf" title="Flash">Flash</a>
+    <a class="item" href="images/image1.jpg" title="Image">Image</a>
+    <a class="item" href="#lipsum" title="Element">Element</a>
+    <a class="item" href="index-src.html" title="Iframe">Iframe</a>
 </div>
 <div id="lipsum" style="display:none">
-	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id felis erat. Cras tellus nibh, vulputate eget tristique eget, gravida at nulla. Nulla vel nulla eget nunc facilisis blandit. Duis sagittis, dolor sit amet ultricies sagittis, nibh massa tristique turpis, molestie lacinia lorem ipsum eget odio. Pellentesque tristique nibh est, molestie faucibus lorem. Cras libero nisl, tempus id consequat sed, eleifend ut lectus. Duis mattis fringilla tempus. Vestibulum felis tellus, consectetur sed ultrices vitae, eleifend at turpis. Donec eget neque odio, vel viverra massa. Vivamus in sollicitudin erat. Fusce vitae sapien sit amet enim condimentum accumsan. Aliquam eget eros sit amet nunc euismod consectetur.</p>
-	<p>Donec consequat, purus sed imperdiet malesuada, lorem mauris egestas tortor, condimentum luctus erat sapien ut sem. Nulla facilisi. Nam dictum commodo dolor vitae auctor. Suspendisse ultricies nisl a lacus fermentum luctus. In ultricies commodo nulla sit amet lobortis. Ut pulvinar interdum nibh vitae facilisis. Mauris id elit in metus accumsan egestas ac dictum ligula. Cras eleifend sapien metus. Nunc libero mauris, mattis in lacinia id, semper vel elit. Donec et nulla sed libero faucibus ullamcorper. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam ut arcu felis. Quisque faucibus adipiscing tempus. Vestibulum accumsan dapibus cursus.</p>
-	<p>Proin adipiscing rhoncus ligula at vulputate. Nam interdum dapibus felis, vel cursus massa condimentum sed. Morbi consectetur enim quis dolor facilisis id varius metus vestibulum. Vestibulum in sapien et nibh porttitor mattis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec faucibus nisl id est imperdiet eget consectetur purus posuere. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Morbi id dolor nec enim sagittis vehicula. Quisque vel nunc vitae risus interdum rutrum volutpat sed turpis. Duis cursus malesuada dapibus. Ut sit amet aliquam augue. In nec lorem et felis accumsan vestibulum eget vitae neque. Vestibulum ut libero sem, nec mattis justo. Nullam ullamcorper convallis lacus sed aliquet. Vestibulum lobortis sollicitudin orci id faucibus. Vivamus vel odio massa.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id felis erat. Cras tellus nibh, vulputate eget tristique eget, gravida at nulla. Nulla vel nulla eget nunc facilisis blandit. Duis sagittis, dolor sit amet ultricies sagittis, nibh massa tristique turpis, molestie lacinia lorem ipsum eget odio.</p>
 </div>
 ```
 
-### Inline gallery example
+## In inject mode
 
-##### JS
+#### JS
 
 ```javascript
 $(function() {
-	$('#items a.item').laboite({
-		inject: true,
-		injectTarget: '#canvas',
-		effect: 'drop',
-		layout: 'inline'
-	});
+    $('#items a.item').laboite({
+        inject: true,
+        injectTarget: '#canvas',
+        effect: 'drop',
+        layout: 'inline'
+    });
 });
 ```
 
-##### HTML
+#### HTML
 
 ```html
 <div id="items">
-	<a class="item" href="images/image1.jpg" title="Image 1">Image 1</a>
-	<a class="item" href="images/image2.jpg" title="Image 2">Image 2</a>
-	<a class="item" href="images/image3.jpg" title="Image 3">Image 3</a>
-	<a class="item" href="images/image4.jpg" title="Image 4">Image 4</a>
-	<a class="item" href="images/image5.jpg" title="Image 5">Image 5</a>
-	<a class="item" href="images/image6.jpg" title="Image 6">Image 6</a>
+    <a class="item" href="images/image1.jpg" title="Image 1">Image 1</a>
+    <a class="item" href="images/image2.jpg" title="Image 2">Image 2</a>
+    <a class="item" href="images/image3.jpg" title="Image 3">Image 3</a>
 </div>
 <div id="canvas"></div>
 ```
 
-### Loading data from a URL
+## Using a data URL
 
 Only JSON supported, considering doing a plugin to support XML too.
 
 ```javascript
 $(function() {
-	$('#items a.item').laboite({
-            dataURL: 'http://domain.com/data/slides.json'
-            // jsonp: true if you are using jsonp
-	});
+    $('#items a.item').laboite({
+        dataURL: 'http://domain.com/data/slides.json'
+        // jsonp: true if you are using jsonp
+    });
 });
 ```
 
-## Options
+# Options
 
 ```javascript
 
@@ -176,52 +178,84 @@ transitionDuration: 1000, // duration in milliseconds used by the animation tran
 // NOTE: IF CLASSES THAT ARE BINDED TO AN ACTION ARE CHANGED THE BINDING MUST BE DONE MANUALLY!
 css: {
 
-	// common prefix
-	prefix: 'laboite-', // prefix added to all CSS classes
-	
-	// buttons
-	play: 'play', // play button CSS class
-	pause: 'pause', // pause button CSS class
-	stop: 'stop', // stop button CSS class
-	previous: 'previous', // next button CSS class
-	next: 'next', // next button CSS class
+    // common prefix
+    prefix: 'laboite-', // prefix added to all CSS classes
+    
+    // buttons
+    play: 'play', // play button CSS class
+    pause: 'pause', // pause button CSS class
+    stop: 'stop', // stop button CSS class
+    previous: 'previous', // next button CSS class
+    next: 'next', // next button CSS class
 
-	// the following are used by autorun to detect interface need and items
-	autorun: 'autorun', // autorun CSS class (check it is still used)
-	items: 'items', // item list wrapper element class
-	item: 'item', // item element class
-	itemWrap: 'item-wrap', // item wrapper class (added on each items)
+    // the following are used by autorun to detect interface need and items
+    autorun: 'autorun', // autorun CSS class (check it is still used)
+    items: 'items', // item list wrapper element class
+    item: 'item', // item element class
+    itemWrap: 'item-wrap', // item wrapper class (added on each items)
 
-	// misc
-	dimmer: 'dimmer'
+    // misc
+    dimmer: 'dimmer'
 },
 
 // attributes to be used to pull item options and data out of a DOM element
 attributes: {
-	title: 'title',
-	source: 'href',
-	maxWidth: 'data-laboite-maxWidth',
-	maxHeight: 'data-laboite-maxHeight',
-	minWidth: 'data-laboite-minWidth',
-	minHeight: 'data-laboite-minHeight',
-	link: 'data-laboite-link',
-	linkTarget: 'data-laboite-linkTarget',
-	description: 'data-laboite-description'
+    title: 'title',
+    source: 'href',
+    maxWidth: 'data-laboite-maxWidth',
+    maxHeight: 'data-laboite-maxHeight',
+    minWidth: 'data-laboite-minWidth',
+    minHeight: 'data-laboite-minHeight',
+    link: 'data-laboite-link',
+    linkTarget: 'data-laboite-linkTarget',
+    description: 'data-laboite-description'
 }
 
 ```
 
-## The transition effects object
+# Setting callbacks
 
-Laboite uses an public objects to store effects transitions in order to provide an API to allow the creation of custom transition effects keeping in the spirit of pushing for customized interfaces.
+In la boite you can attached callbacks to every single methods inside the plugin, this is because laboite use an internal call method, which
+well call methods. This function is also use for logging and as it posses the method reference it can look inside the callbacks object for method 
+begining by the same reference and ending with Before or After (obviosuly depending on if you want the callback executed before or after the function).
 
-Below is an example of a custom effects, the comments will explain the effect of each property.
+This allows for a great amount of customization.
+
+```javascript
+
+$('.item').laboite({
+    callbacks: {
+       closeBefore: function() {
+
+       },
+       closeAfter: function() {
+
+       },
+       openAfter: function() {
+
+       },
+       nextBefore: function() {
+
+       },
+       buildUIAfter: function() {
+
+       }
+    }
+});
+
+```
+
+# Custom transitions
+
+Laboite uses a public object to store transitions effecyts in order to facilitate the creation of custom transitions.
+
+Below is an example of a custom effect, the comments will explain the effect of each property.
 
 ```javascript
 
 $.extend($.laboite.effects, {
 
-    // Drop effect (to illustrate usage of the init object)
+    // name of the effect
     drop: {
     
         // hide transition effect
@@ -261,10 +295,46 @@ $.extend($.laboite.effects, {
     }
 });
 
+```
+
+# Custom layouts
+
+Layouts are handled the same way so custom layouts can easily be added in the same way as transitions effects
+
+```javascript
+
+// this is the minimum markup required for laboite to work
+$.extend($.laboite.layouts, {
+    foo: '<div class="laboite-wrap">\
+        <div class="laboite-container">\
+            <div class="laboite-content"></div>\
+        </div>\
+    </div>'
+});
 
 ```
 
-## La Boite version 1
-http://laboite.codeserenity.com
+# Custom languages
 
+And, as you would have guessed by now, languages are handled the same way
 
+```javascript
+
+$.extend($.laboite.languages, {
+
+    // french
+    'fr': {
+        close: 'Fermer',
+        previous: 'Precedent',
+        next: 'Suivant',
+        play: 'Commencer',
+        pause: 'Pauser',
+        stop: 'Arreter',
+        stats: '${current} de ${total}'
+    }
+
+});
+
+## La Boite V1
+
+The first version was more your expected lightbox plugin. It's not supported anymore and doesn't work with latest jQuery but [here it is anyway](http://laboite.codeserenity.com)
