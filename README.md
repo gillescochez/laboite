@@ -1,5 +1,6 @@
+# Menu
 
-* [Introduction](#la-boite-2)
+* [Introduction](#introduction)
 * [Features](#features)
 * [Options](#options)
 * [Setting callbacks](#setting-callbacks)
@@ -21,6 +22,8 @@ have the same lightbox design which doesn't always match the actual website desi
 La Boite try to simplify the customization process by providing libraries of effects, layouts
 and languages which can be extended very easily.
 
+[Menu](#menu)
+
 # Features
 
 * Handle images, flash (using swfobject), element and iframe
@@ -32,6 +35,8 @@ and languages which can be extended very easily.
 * It can be passed the data, grab it from the DOM or fetch it via ajax
 * much more...
 
+[Menu](#menu)
+
 # Usage
 
 ### In modal mode
@@ -39,14 +44,17 @@ and languages which can be extended very easily.
 #### JS
 
 ```javascript
+
 $(function() {
     $('#items a.item').laboite();
 });
+
 ```
 
 #### HTML
 
 ```html
+
 <div id="items">
     <a class="item" href="fireworks.swf" title="Flash">Flash</a>
     <a class="item" href="images/image1.jpg" title="Image">Image</a>
@@ -56,6 +64,7 @@ $(function() {
 <div id="lipsum" style="display:none">
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id felis erat. Cras tellus nibh, vulputate eget tristique eget, gravida at nulla. Nulla vel nulla eget nunc facilisis blandit. Duis sagittis, dolor sit amet ultricies sagittis, nibh massa tristique turpis, molestie lacinia lorem ipsum eget odio.</p>
 </div>
+
 ```
 
 ## In inject mode
@@ -63,6 +72,7 @@ $(function() {
 #### JS
 
 ```javascript
+
 $(function() {
     $('#items a.item').laboite({
         inject: true,
@@ -71,17 +81,20 @@ $(function() {
         layout: 'inline'
     });
 });
+
 ```
 
 #### HTML
 
 ```html
+
 <div id="items">
     <a class="item" href="images/image1.jpg" title="Image 1">Image 1</a>
     <a class="item" href="images/image2.jpg" title="Image 2">Image 2</a>
     <a class="item" href="images/image3.jpg" title="Image 3">Image 3</a>
 </div>
 <div id="canvas"></div>
+
 ```
 
 ## Using a data URL
@@ -89,13 +102,17 @@ $(function() {
 Only JSON supported, considering doing a plugin to support XML too.
 
 ```javascript
+
 $(function() {
     $('#items a.item').laboite({
         dataURL: 'http://domain.com/data/slides.json'
         // jsonp: true if you are using jsonp
     });
 });
+
 ```
+
+[Menu](#menu)
 
 # Options
 
@@ -213,6 +230,8 @@ attributes: {
 
 ```
 
+[Menu](#menu)
+
 # Setting callbacks
 
 In la boite you can attached callbacks to every single methods inside the plugin, this is because laboite use an internal call method, which
@@ -244,6 +263,8 @@ $('.item').laboite({
 });
 
 ```
+
+[Menu](#menu)
 
 # Custom transitions
 
@@ -297,6 +318,8 @@ $.extend($.laboite.effects, {
 
 ```
 
+[Menu](#menu)
+
 # Custom layouts
 
 Layouts are handled the same way so custom layouts can easily be added in the same way as transitions effects
@@ -313,6 +336,8 @@ $.extend($.laboite.layouts, {
 });
 
 ```
+
+[Menu](#menu)
 
 # Custom languages
 
@@ -334,6 +359,10 @@ $.extend($.laboite.languages, {
     }
 
 });
+
+```
+
+[Menu](#menu)
 
 ## La Boite V1
 
