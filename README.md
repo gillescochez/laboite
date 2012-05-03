@@ -1,6 +1,6 @@
 # NOTICE
 
-Project is doing quite a lot already but not test suite yet so there is still room for errors.
+Project is doing quite a lot already (see the demo folder) but no test suite yet and there is some polish needed here and there.
 
 # La Boite 2
 
@@ -80,6 +80,19 @@ $(function() {
 	<a class="item" href="images/image6.jpg" title="Image 6">Image 6</a>
 </div>
 <div id="canvas"></div>
+```
+
+### Loading data from a URL
+
+Only JSON supported, considering doing a plugin to support XML too.
+
+```javascript
+$(function() {
+	$('#items a.item').laboite({
+            dataURL: 'http://domain.com/data/slides.json'
+            // jsonp: true if you are using jsonp
+	});
+});
 ```
 
 ## Options
