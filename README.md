@@ -35,7 +35,7 @@ Feel free to fork and join in the fun :)
 * Effects are stored in an object which can be extended
 * Markup layouts are stored in an object which can be extended
 * Languages strings are stored in an object which can be extended
-* Every methods called can have a callback function (callbacks are attach to a callback object and match the method name)
+* Every methods called can have a [callback function](#setting-callbacks)
 * Display the interface as a modal or injected on the page
 * It can be passed the data, grab it from the DOM or fetch it via ajax
 * much more...
@@ -104,7 +104,7 @@ $(function() {
 
 ## Using a data URL
 
-Only JSON supported, considering doing a plugin to support XML too.
+Only JSON supported, considering doing a plugin to support XML too later on.
 
 ```javascript
 
@@ -128,15 +128,15 @@ lang: 'en', // set which language to use
 
 // debugging tools
 log: false, // if enabled all method called made using the call method will be logged into the console
-debug: false, // enable | disable error reporting (using console.error() if available otherwise default to alert())
+debug: false, // enable | disable error reporting (using console.error() if available otherwise default to throw)
 
 // data options
 data: false, // can be used to pass the data to use when calling the plugin
-dataURL: false, // can be used to pass a URL which can be request via ajax to get the data for the plugin
-jsonp: false, // set wether the ajax call for data should be json or jsonp (cross domain querying)
+dataURL: false, // can be used to pass a URL which can be request via ajax to get the data
+jsonp: false, // set wether the ajax call for data should be handled as jsonp
 
 // layout
-layout: 'modal', // modal | inline (can be extended via $.fn.laboite.layouts to use custom ones)
+layout: 'modal', // modal | inline 
 
 // Options related to the injected UI
 inject: false, // if true the UI will be inserted into the injectTarget selector 
@@ -240,8 +240,8 @@ attributes: {
 # Setting callbacks
 
 In la boite you can attached callbacks to every single methods inside the plugin, this is because laboite use an internal call method, which
-well call methods. This function is also use for logging and as it posses the method reference it can look inside the callbacks object for method 
-begining by the same reference and ending with Before or After (obviosuly depending on if you want the callback executed before or after the function).
+well, call methods. This function is also use for logging and as it can look inside the callbacks object for method begining by the same reference 
+and ending with Before or After (obviosuly depending on if you want the callback executed before or after the called method).
 
 This allows for a great amount of customization.
 
@@ -273,9 +273,9 @@ $('.item').laboite({
 
 # Custom transitions
 
-Laboite uses a public object to store transitions effecyts in order to facilitate the creation of custom transitions.
+Laboite uses a public object to store transitions effects in order to facilitate the creation of custom transitions.
 
-Below is an example of a custom effect, the comments will explain the effect of each property.
+Below is an example of a custom effect, drop, the comments will explain the effect of each property.
 
 ```javascript
 
@@ -327,13 +327,13 @@ $.extend($.laboite.effects, {
 
 # Custom layouts
 
-Layouts are handled the same way so custom layouts can easily be added in the same way as transitions effects
+Layouts are handled the same way as transitions so custom layouts can easily be added in the same way as transitions effects
 
 ```javascript
 
 // this is the minimum markup required for laboite to work
 $.extend($.laboite.layouts, {
-    foo: '<div class="laboite-wrap">\
+    minimal: '<div class="laboite-wrap">\
         <div class="laboite-container">\
             <div class="laboite-content"></div>\
         </div>\
@@ -346,7 +346,7 @@ $.extend($.laboite.layouts, {
 
 # Custom languages
 
-And, as you would have guessed by now, languages are handled the same way
+And, as you would have guessed by now, languages are handled the same way.
 
 ```javascript
 
