@@ -1,0 +1,28 @@
+* {
+    padding:0;
+    margin:0;
+}
+#menu {
+    margin:10px;
+    overflow:hidden;
+}
+    #menu a {
+        display:block;
+        padding:5px 10px;
+        border:1px solid #ccc;
+        margin:0 10px 0 0;
+        float:left;
+    }
+.laboite-dropdown {
+    width:75px;
+}
+    .laboite-dropdown a {
+        display:block;
+    }
+    .laboite-dropdown .laboite-container {
+        min-height:0;
+        height:auto;
+    }
+#items {
+    display:none;
+}

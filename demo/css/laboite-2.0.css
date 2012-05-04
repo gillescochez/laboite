@@ -1,0 +1,104 @@
+body {
+	min-height:900px;
+	font-family:arial, sans-serif;
+	font-size:14px;
+}
+
+#canvas {
+	overflow:hidden;
+	display:inline;
+}
+
+/* Default element style */
+.laboite-dimmer {
+	background:#000;
+}
+.laboite-wrap {
+	background:#fff;
+	border-radius:5px;
+	border:1px solid #ccc;
+	text-align:left;
+	font-family:arial, sans-serif;
+	font-size:12px;
+	padding:10px;
+	margin:10px;
+}
+	.laboite-wrap a {
+		text-decoration:none;
+	}
+	.laboite-container {
+		position:relative;
+		overflow:hidden;
+		min-height:300px;
+		min-width:400px;
+		margin-bottom:10px;
+	}
+	.laboite-content {
+		position:absolute;
+	}
+	
+		/* 
+			BOF TEMPORARY IMAGE WIDTH LIMITTER
+		
+		.laboite-content img {
+			width:400px;
+		}*/
+		/* 
+			EOF TEMPORARY 
+		*/
+	
+	.laboite-controls {
+		overflow:hidden;
+	}
+		.laboite-button {
+			background:#ccc;
+			border-radius:3px;
+			border:1px solid #ccc;
+			margin:0 5px 10px 0;
+			display:block;
+			float:left;
+		}
+		.laboite-button:hover {
+			background:#f4f4f4;
+		}
+			.laboite-button span {
+				padding:5px 10px;
+			}
+		.laboite-close {}
+		.laboite-previous {}
+		.laboite-next {}
+		.laboite-play {}
+		.laboite-pause {}
+		.laboite-stop {}
+		
+/* Modal style */
+.laboite-modal {
+	top:20px;
+	position:absolute;
+	box-shadow:5px 5px 30px rgba(0,0,0,0.5);
+}
+	.laboite-modal .laboite-content {}
+	.laboite-modal .laboite-controls {}
+		.laboite-modal .laboite-button {}
+		.laboite-modal .laboite-close {
+			display:block;
+		}
+		.laboite-modal .laboite-previous {}
+		.laboite-modal .laboite-next {}
+		.laboite-modal .laboite-play {}
+		.laboite-modal .laboite-pause {}
+		.laboite-modal .laboite-stop {}
+		
+/* Inline style */
+.laboite-inline {
+	display:inline-block;
+}
+	.laboite-inline .laboite-content {}
+	.laboite-inline .laboite-controls {}
+		.laboite-inline .laboite-button {}
+		.laboite-inline .laboite-close {}
+		.laboite-inline .laboite-previous {}
+		.laboite-inline .laboite-next {}
+		.laboite-inline .laboite-play {}
+		.laboite-inline .laboite-pause {}
+		.laboite-inline .laboite-stop {}

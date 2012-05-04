@@ -10,7 +10,5 @@ $.laboite.languages = {
         pause: 'Pause',
         stop: 'Stop',
         stats: '${current} out of ${total}'
-    },
-    
-
+    }
 };

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8" />
+    <title>Dropdown demo</title>
+    <link rel="stylesheet" href="css/laboite-2.0.css" />
+    <link rel="stylesheet" href="css/dropdown.css" />
+    <script src="lib/jquery.js"></script>
+    <script src="../dist/laboite2.min.js"></script>
+    <script>
+    $(function() {
+
+        $.extend($.laboite.layouts, {
+            dropdown: function() { return '<div class="laboite-wrap laboite-dropdown"><div class="laboite-container"><div class="laboite-content"></div></div></div>'} 
+        });
+
+       $('#menu a').each(function() {
+
+            var self = this;
+
+console.log(self.id, self.href);
+
+            $(self).laboite({
+                modalTarget: '#' + self.id,
+                modalOffetTop: $('#' + self.id).outerHeight(),
+                layout: 'dropdown',
+                dimmer: false,
+                effect: 'none'
+            }).click(function(ev) {
+                ev.preventDefault();
+                if ($('#' + self.href.split('#')[1] + ':visible').size()) {
+                    $(self).laboite('close');
+                };
+            });
+
+       });
+    });
+    </script>
+</head>
+<body>
+<div id="menu">
+    <a href="#item1" id="menu1"><span>Item 1</span></a>
+    <a href="#item2" id="menu2"><span>Item 2</span></a>
+    <a href="#item3" id="menu3"><span>Item 3</span></a>
+    <a href="#item4" id="menu4"><span>Item 4</span></a>
+    <a href="#item5" id="menu5"><span>Item 5</span></a>
+</div>
+<div id="items">
+    <div id="item1">
+        <a href="#"><span>Link 1</span></a>
+        <a href="#"><span>Link 2</span></a>
+        <a href="#"><span>Link 3</span></a>
+    </div>
+    <div id="item2">
+        <a href="#"><span>Link 1</span></a>
+        <a href="#"><span>Link 2</span></a>
+        <a href="#"><span>Link 3</span></a>
+    </div>
+    <div id="item3">
+        <a href="#"><span>Link 1</span></a>
+        <a href="#"><span>Link 2</span></a>
+        <a href="#"><span>Link 3</span></a>
+    </div>
+    <div id="item4">
+        <a href="#"><span>Link 1</span></a>
+        <a href="#"><span>Link 2</span></a>
+        <a href="#"><span>Link 3</span></a>
+    </div>
+    <div id="item5">
+        <a href="#"><span>Link 1</span></a>
+        <a href="#"><span>Link 2</span></a>
+        <a href="#"><span>Link 3</span></a>
+    </div>
+</div>
+</body>
+</html>
