@@ -691,6 +691,8 @@ $.laboite = function(root) {
         // close the dimmer element
         closeDimmer: function() {
         
+            if (!options.dimmer) return;
+        
             // fade the dimmer out
             cache['dimmer'].fadeTo(options.dimmerFadeDuration, 0, function() {
                     
