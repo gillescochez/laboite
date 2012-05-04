@@ -63,7 +63,7 @@ $.laboite = function(root) {
                 else {
                 
                     // bind our element
-                    root.live(options.onEvent, function(ev) {
+                    root.bind(options.onEvent, function(ev) {
                     
                         // prevent default behaviour
                         ev.preventDefault();
@@ -96,13 +96,13 @@ $.laboite = function(root) {
                     // loop through the different classes
                     for (var i = 0; i < nb; i++) {
                     
-                        // make sure it is a aboite sepecific classes 
+                        // make sure it is a laboite specific classes 
                         if (bits[i] && bits[i].indexOf(options.css.prefix) !== -1) {
                                 
                             // we build an internal identifier for our element by removing the prefix part (faster access and few lines down it would be clearer why)
                             var id = bits[i].replace(options.css.prefix, '');
                             
-                            // cache our element (we strip out the prefix for easier access
+                            // cache our element
                             cache[id] = $(this);
 
                             // now let's see if there is a function that can be bind to that element
@@ -219,7 +219,7 @@ $.laboite = function(root) {
             laboite.call('modalBind');
             
             // go to the requested item
-            laboite.call('goToId', $(trigger).index());
+            laboite.call('goToId', options.data.items.length > 1 ? $(trigger).index() : options.defaultIndex);
         },
         
         
@@ -519,10 +519,10 @@ $.laboite = function(root) {
                 duration: options.resizeDuration,
                 easing: options.resizeEasing,
                 step: function() {
-                        laboite.call('positionUI');
+                    laboite.call('positionUI');
                 },
                 complete: function() {
-                        laboite.call('showItem');
+                    laboite.call('showItem');
                 }
             });
         },
@@ -536,14 +536,15 @@ $.laboite = function(root) {
                 // if so grab it as well as it's top and left position
                 var $target = $(options.modalTarget),
                     pos = $target.offset();
-                
+
                 // make sure we have some data (error output?)
                 if (pos != null) {
                         
                     // position the layout
                     layout.css({
                         top:pos.top + options.modalOffsetTop,
-                        left:pos.left + options.modalOffsetLeft
+                        left:pos.left + options.modalOffsetLeft,
+                        position:'absolute'
                     });
                 };
             } else {
@@ -786,7 +787,7 @@ $.laboite = function(root) {
 
             // assign the data
             options.data.items = items;
-            
+
             // run!
             laboite.call('run');
         },

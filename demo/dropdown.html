@@ -11,18 +11,19 @@
     $(function() {
 
         $.extend($.laboite.layouts, {
-            dropdown: function() { return '<div class="laboite-wrap laboite-dropdown"><div class="laboite-container"><div class="laboite-content"></div></div></div>'} 
+            dropdown: function() {
+                return '<div class="laboite-wrap laboite-dropdown"><div class="laboite-container"><div class="laboite-content"></div></div></div>'
+            } 
         });
 
        $('#menu a').each(function() {
 
             var self = this;
 
-console.log('#' + self.id);
-
             $(self).laboite({
-                modalTarget: '#' + self.id,
-                modalOffetTop: $('#' + self.id).outerHeight(),
+                modalTarget: self,
+                modalOffsetTop: $(self).height(),
+                modalOffsetLeft: -10,
                 layout: 'dropdown',
                 dimmer: false,
                 effect: 'none',
