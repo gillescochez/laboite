@@ -18,21 +18,25 @@
 
             var self = this;
 
-console.log(self.id, self.href);
+console.log('#' + self.id);
 
             $(self).laboite({
                 modalTarget: '#' + self.id,
                 modalOffetTop: $('#' + self.id).outerHeight(),
                 layout: 'dropdown',
                 dimmer: false,
-                effect: 'none'
-            }).click(function(ev) {
-                ev.preventDefault();
-                if ($('#' + self.href.split('#')[1] + ':visible').size()) {
-                    $(self).laboite('close');
-                };
+                effect: 'none',
+                callbacks: {
+                    openAfter: function() {
+                        // for some reason using .one() fails here...
+                        $(self).bind('click.close', function(ev) {
+                            ev.preventDefault();
+                            $(self).unbind('click.close');
+                            $(self).laboite('close');
+                        });
+                    }
+                }
             });
-
        });
     });
     </script>

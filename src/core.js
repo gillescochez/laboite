@@ -110,7 +110,7 @@ $.laboite = function(root) {
                             if ($.isFunction(laboite[id])) {
                             
                                 // bind the element
-                                cache[id].click(function(ev) {
+                                cache[id].bind('click', function(ev) {
                                 
                                     // prevent default behaviour
                                     ev.preventDefault();
