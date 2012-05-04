@@ -95,7 +95,6 @@ $.laboite.defaults = {
         itemWrap: 'item-wrap', // item wrapper class (added on each items)
 
         // those are status classes that are added to the main wrapper depending on various status
-        // NOT IN USE YET (MIGHT TAKE THEM OUT LATER)
         slideshowDisabled: 'slideshowDisabled',
         slideshowOn: 'slideshowOn',
         slideshowOff: 'slideshowOff',

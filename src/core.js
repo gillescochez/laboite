@@ -495,6 +495,10 @@ $.laboite = function(root) {
             
             cache['content'].children().hide().end().append($frame);
         },
+
+        updateInfo: function(item) {
+            
+        },
             
         resizeContainer: function(width, height) {
         
